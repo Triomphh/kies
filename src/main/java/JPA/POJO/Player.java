@@ -5,12 +5,6 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-enum Genre{
-    HOMME,
-    FEMME,
-    AUTRE
-}
-
 @Entity
 @Table(name = "Player")
 public class Player implements Serializable {
