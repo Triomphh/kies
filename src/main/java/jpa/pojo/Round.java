@@ -17,7 +17,7 @@ public class Round {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "winner", referencedColumnName = "player_id")
