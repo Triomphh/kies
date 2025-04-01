@@ -1,0 +1,68 @@
+// À copier-coller dans https://dbdiagram.io/
+// ou, lien direct: https://dbdiagram.io/d/kies-67ebec454f7afba184f3648e
+
+Table accounts {
+  account_id bigint [primary key]
+  password varchar
+  age integer
+  gender enum
+  date_registered time
+  player_id Player [ref: - players.player_id]
+}
+
+Table players {
+  player_id bigint [primary key]
+  nickname varchar
+}
+
+Table games {
+  game_id bigint [primary key]
+  creator Player [ref: < players.player_id, not null]
+  opponent Player [ref: < players.player_id, not null]
+  max_rounds integer
+  turnLimit integer
+  creation_timestamp time
+  winner Player [ref: - players.player_id]
+  grid Grid [ref: < grids.grid_id]
+}
+
+Table rounds {
+  round_id bigint [primary key]
+  round_number integer
+  status enum
+  winner Player [ref: - players.player_id]
+  game Game [ref: - games.game_id]
+}
+
+Table grids {
+  grid_id bigint [primary key]
+  name varchar
+  category Category [ref: < categories.category_id]
+  image_url varchar
+  rows integer
+  columns integer
+  characters vector(Character) [note:"Character, classe non stockée en bdd"]
+  x integer [note: "top-left x"]
+  y integer [note: "top-left y"]
+  height integer [note: "taille du rectangle"]
+  width integer [note: "taille du rectangle"]
+  gap_x integer [note: "gap x entre 2 rectangle de character"]
+  gap_y integer [note: "gap y entre 2 rectangle de character"]
+  creator Account [ref : < accounts.account_id]
+}
+
+table categories {
+  category_id bigint [primary key]
+  name varchar
+  creator Account [ref: < players.player_id]
+}
+
+table questions {
+  question_id bigint [primary key]
+  turn_number integer
+  text varchar [note:"Texte de la question"]
+  answer enum [note:"[ YES | NO | PENDING ]"]
+  timestamp timestamp
+  round Round [ref: < rounds.round_id]
+  asker Player [ref: < players.player_id]
+}
