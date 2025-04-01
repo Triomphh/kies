@@ -3,16 +3,16 @@
 
 Table accounts {
   account_id bigint [primary key]
-  password varchar
+  password varchar [not null]
   age integer
   gender enum
   date_registered time
-  player_id Player [ref: - players.player_id]
+  player_id Player [ref: - players.player_id, not null]
 }
 
 Table players {
   player_id bigint [primary key]
-  nickname varchar
+  nickname varchar [unique]
 }
 
 Table games {
