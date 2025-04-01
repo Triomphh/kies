@@ -1,7 +1,8 @@
 package JPA.POJO;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "players")
@@ -22,6 +23,9 @@ public class Player {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(nullable = false)
+    private LocalDateTime dateRegistered;
 
     private int gamesPlayed;
     private int victories;
@@ -67,6 +71,13 @@ public class Player {
     }
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public LocalDateTime getDateRegistered() {
+        return dateRegistered;
+    }
+    public void setDateRegistered(LocalDateTime dateRegistered) {
+        this.dateRegistered = dateRegistered;
     }
 
     public int getVictories() {
