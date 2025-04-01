@@ -2,13 +2,16 @@ package JPA.POJO;
 
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 
 @Entity
 @Table(name = "players")
-public class Player implements Serializable {
+public class Player {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
     @Column(nullable = false)
@@ -23,6 +26,13 @@ public class Player implements Serializable {
     private int gamesPlayed;
     private int victories;
 
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
