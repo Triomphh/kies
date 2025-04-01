@@ -22,7 +22,7 @@ public class Question {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "answer")
-    private String answer;
+    private Answer answer;
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
