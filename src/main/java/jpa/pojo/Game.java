@@ -34,10 +34,13 @@ public class Game {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "winner", referencedColumnName = "player_id")
     private Player winner;
-    
-    
-    
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grid_id", referencedColumnName = "grid_id")
+    private Grid grid;
     
     
+    // Getters et Setters
+    // ...
+
 }
