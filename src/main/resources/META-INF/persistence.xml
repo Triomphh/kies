@@ -3,6 +3,30 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
              version="3.2">
-    <persistence-unit name="kies">
+    <persistence-unit name="kies" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Classes -->
+        <class>jpa.pojo.Account</class>
+        <class>jpa.pojo.Answer</class>
+        <class>jpa.pojo.Category</class>
+        <class>jpa.pojo.Game</class>
+        <class>jpa.pojo.Grid</class>
+        <class>jpa.pojo.Player</class>
+        <class>jpa.pojo.Question</class>
+        <class>jpa.pojo.Round</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/kiesdb"/>
+            <property name="jakarta.persistence.jdbc.user" value="triomph"/>
+            <property name="jakarta.persistence.jdbc.password" value="kies"/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+        </properties>
     </persistence-unit>
 </persistence>
