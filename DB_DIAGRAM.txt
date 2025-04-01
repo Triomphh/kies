@@ -54,7 +54,7 @@ Table grids {
 table categories {
   category_id bigint [primary key]
   name varchar
-  creator Account [ref: < players.player_id]
+  creator Account [ref: < accounts.account_id]
 }
 
 table questions {
