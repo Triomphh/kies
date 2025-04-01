@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "players")
 public class Player {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +30,32 @@ public class Player {
     private int gamesPlayed;
     private int victories;
 
+
+    // Constructeur par défaut
+    public Player() {
+        this.dateRegistered = LocalDateTime.now();
+        this.gamesPlayed = 0;
+        this.victories = 0;
+    }
+
+    /**
+     * Crée un nouveau Player 
+     * 
+     * @param username   pseudo du joueur
+     * @param password   mot de passe du joueur
+     * @param age        âge du joueur
+     * @param gender     genre du joueur
+     */
+    public Player(String username, String password, int age, Gender gender) {
+        this();
+        this.username = username;
+        this.password = password;
+        this.age = age;
+        this.gender = gender;
+    }
+
+
+    // Getters et setters
 
     public Long getId() {
         return id;
