@@ -1,6 +1,6 @@
-package JPA;
+package jpa;
 
-import JPA.POJO.Player;
+import jpa.pojo.Player;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.*;

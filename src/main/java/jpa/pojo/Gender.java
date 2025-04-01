@@ -1,4 +1,4 @@
-package JPA.POJO;
+package jpa.pojo;
 
 public enum Gender{
     MALE,
