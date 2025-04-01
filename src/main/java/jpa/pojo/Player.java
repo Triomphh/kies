@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "player_id")
+    private Long playerId;
 
     @Column(unique = true, nullable = false, length = 50)
     private String nickname;
@@ -40,11 +41,11 @@ public class Player {
 
     // Getters et Setters
 
-    public Long getId() {
-        return id;
+    public Long getPlayerId() {
+        return playerId;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 
     public String getNickname() {
