@@ -10,6 +10,15 @@ Un joueur qui n'a pas de compte, peut jouer en mode invité/guest. Il pourra aus
 ❓ Apparaître dans le classement (à voir)
 ❌ Ajouter une grille custom
 
+### Implémentation
+#### Player + (optionnal) Account
+On utilisera 2 tables dans la bdd, une Player et une Account :
+- Player : contient les infos minimales du joueur (player_id (PK), nickname (unique d'après le sujet))
+- Account : contient les infos du compte (account_id (PK), player_id (FK), password, email?, date_registered, etc...)
+Player a une relation 1:1 OPTIONNELLE avec Account.
+Account a une relation 1:1 OBLIGATOIRE avec Player.
+
+
 
 ## Grilles
 ### Grilles custom

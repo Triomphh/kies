@@ -14,8 +14,8 @@ public class Main {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         // Création d'une entité
         Player player = new Player();
-        player.setPseudo("Martin");
-        System.out.println(player.getPseudo());
+        player.setNickname("Martin");
+        System.out.println(player.getNickname());
         // Début de la transaction
         entityManager.getTransaction().begin();
         // Persistance de l'entité dans la base de données
