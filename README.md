@@ -2,6 +2,9 @@
 ./mvnw spring-boot:run
 ```
 
+LES POJOs SONT EXCLUS DU BUILD DANS CE COMMIT (pour ne pas empêcher le build) `pom.xml`
+
+
 # Stack
 - Svelte (frontend)
 - Spring Boot avec JPA (backend)
