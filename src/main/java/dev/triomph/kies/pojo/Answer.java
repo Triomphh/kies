@@ -1,4 +1,4 @@
-package jpa.pojo;
+package dev.triomph.kies.pojo;
 
 /**
  * Représente l'état d'une réponse à une question.
@@ -8,4 +8,4 @@ public enum Answer {
     YES,
     NO,
     PENDING
-} 
+}

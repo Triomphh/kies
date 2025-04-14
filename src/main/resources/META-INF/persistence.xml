@@ -7,14 +7,14 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Classes -->
-        <class>jpa.pojo.Account</class>
-        <class>jpa.pojo.Answer</class>
-        <class>jpa.pojo.Category</class>
-        <class>jpa.pojo.Game</class>
-        <class>jpa.pojo.Grid</class>
-        <class>jpa.pojo.Player</class>
-        <class>jpa.pojo.Question</class>
-        <class>jpa.pojo.Round</class>
+        <class>dev.triomph.kies.pojo.Account</class>
+        <class>dev.triomph.kies.pojo.Answer</class>
+        <class>dev.triomph.kies.pojo.Category</class>
+        <class>dev.triomph.kies.pojo.Game</class>
+        <class>dev.triomph.kies.pojo.Grid</class>
+        <class>dev.triomph.kies.pojo.Player</class>
+        <class>dev.triomph.kies.pojo.Question</class>
+        <class>dev.triomph.kies.pojo.Round</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>

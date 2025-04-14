@@ -1,4 +1,4 @@
-package jpa.pojo;
+package dev.triomph.kies.pojo;
 
 public enum Gender{
     MALE,
