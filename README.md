@@ -1,6 +1,14 @@
+```bash
+docker compose up --build
+docker compose down 
+
+# spéciales
+docker compose down --volumes # pour supprimer les volumes
+docker compose build --no-cache # clean build
 ```
-./mvnw spring-boot:run
-```
+L'image est un peu lourde (~500mb) mais elle comprend maven pour build directement dans le container.
+En prod on passera par une image avec JRE uniquement et on transférera le .jar précompilé dedans.
+
 
 LES POJOs SONT EXCLUS DU BUILD DANS CE COMMIT (pour ne pas empêcher le build) `pom.xml`
 
