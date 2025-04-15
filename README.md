@@ -38,3 +38,4 @@ et Spring Test... mais tester c'est douter donc pas Spring Test
 # Ressources utiles
 - [Spring Initializr](https://start.spring.io/)
 - [spring-boot-docker](https://spring.io/guides/gs/spring-boot-docker)
+- [SpringBoot PostgreSQL Docker Guide](https://www.baeldung.com/spring-boot-postgresql-docker)
