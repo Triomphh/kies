@@ -19,7 +19,7 @@
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/kiesdb"/>
-            <property name="jakarta.persistence.jdbc.user" value="triomph"/>
+            <property name="jakarta.persistence.jdbc.user" value="kies"/>
             <property name="jakarta.persistence.jdbc.password" value="kies"/>
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
