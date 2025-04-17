@@ -10,32 +10,32 @@ import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.triomph.kies.DAO.FakeDAO;
 import dev.triomph.kies.pojo.Fake;
-import dev.triomph.kies.repository.FakeRepository;
 
 
 @SpringBootApplication
 @RestController
 public class Application {
 	@Autowired
-	private FakeRepository fakeRepository;
+	private FakeDAO fakeDAO;
 
 	@GetMapping("/")
 	public String home() {
-		return "Number: " + fakeRepository.findAll().size();
+		return "Number: " + fakeDAO.findAll().size();
 	}
 	
 	@EventListener(ApplicationReadyEvent.class)
 	public void runAfterStartup() {
-		List<Fake> allFakes = this.fakeRepository.findAll();
+		List<Fake> allFakes = this.fakeDAO.findAll();
 		System.out.println("Number of fakes:" + allFakes.size());
 
 		Fake newFake = new Fake();
 		newFake.setFirstName("John");
 		newFake.setLastName("Doe");
-		this.fakeRepository.save(newFake);
+		this.fakeDAO.save(newFake);
 		
-		allFakes = this.fakeRepository.findAll();
+		allFakes = this.fakeDAO.findAll();
 		System.out.println("Number of fakes:" + allFakes.size());
 	}
 
