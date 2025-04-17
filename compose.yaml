@@ -18,3 +18,15 @@ services:
       - POSTGRES_DB=kiesdb
       - POSTGRES_USER=kies
       - POSTGRES_PASSWORD=kies
+
+  pgadmin:
+    image: 'dpage/pgadmin4:9.2.0'
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@kies.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
