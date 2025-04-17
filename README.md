@@ -72,4 +72,6 @@ et Spring Test... mais tester c'est douter donc pas Spring Test
 - [Spring Initializr](https://start.spring.io/)
 - [spring-boot-docker](https://spring.io/guides/gs/spring-boot-docker)
 - [SpringBoot PostgreSQL Docker Guide](https://www.baeldung.com/spring-boot-postgresql-docker)
-- [DAO avec JPA SpringBoot](https://www.geeksforgeeks.org/data-access-object-pattern/)
+- [DAO avec SpringBoot Data JPA](https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa)
+- [DAO avec JPA](https://www.geeksforgeeks.org/data-access-object-pattern/)
+- [DAO vs Repository](https://stackoverflow.com/questions/59797882/is-jparepository-interface-covers-the-responsibilities-of-dao-interface-in-sprin)
