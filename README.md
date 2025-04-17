@@ -13,6 +13,31 @@ En prod on passera par une image avec JRE uniquement et on transférera le .jar 
 LES POJOs SONT EXCLUS DU BUILD DANS CE COMMIT (pour ne pas empêcher le build) `pom.xml`
 
 
+# Instructions
+## pgAdmin
+```
+http://localhost:5050
+```
+```
+login: admin@kies.com
+mdp:   admin
+```
+Pour ajouter la database, il faut:
+1. `Add New Server`
+2. Dans `General`:
+   - `Name`: kies
+3. Dans `Connection`:
+    - `Host name/address`: db
+    - `Port`: 5432
+    - `Maintenance database`: kiesdb
+    - `Username`: kies
+    - `Password`: kies
+4. `Save`
+
+Je sais pas si il y a une vue GUI pour voir les tables de la db, mais perso je passe par le Query Tool et `SELECT * FROM *` à l'ancienne.
+
+
+
 # Stack
 - Svelte (frontend)
 - Spring Boot avec JPA (backend)
