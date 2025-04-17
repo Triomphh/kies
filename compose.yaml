@@ -18,6 +18,8 @@ services:
       - POSTGRES_DB=kiesdb
       - POSTGRES_USER=kies
       - POSTGRES_PASSWORD=kies
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   pgadmin:
     image: 'dpage/pgadmin4:9.2.0'
@@ -30,3 +32,7 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - db
+
+volumes:
+  postgres_data:
+  pgadmin_data:
