@@ -2,6 +2,7 @@ package dev.triomph.kies.pojo;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -28,6 +29,7 @@ public class Account {
     // Relation 1:1 obligatoire avec Player
     @OneToOne(fetch = FetchType.LAZY, optional = false) // Un compte doit obligatoirement appartenir à un joueur
     @JoinColumn(name = "player_id", nullable = false, unique = true) // Colonne de clé étrangère
+    @JsonBackReference
     private Player player;
 
 

@@ -1,5 +1,6 @@
 package dev.triomph.kies.pojo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +20,7 @@ public class Player {
 
     // Relation 1:1 optionnelle avec Account
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    @JsonManagedReference
     private Account account;
 
 
