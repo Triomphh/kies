@@ -60,24 +60,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>dev/triomph/kies/pojo/Account.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Answer.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Category.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Game.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Gender.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Grid.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Player.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Question.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Round.java</exclude>
-						<exclude>dev/triomph/kies/pojo/Status.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 

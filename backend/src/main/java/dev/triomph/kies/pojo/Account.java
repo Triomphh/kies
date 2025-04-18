@@ -10,7 +10,8 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "account_id")
+    private Long accountId;
 
     @Column(nullable = false)
     private String password;
@@ -55,10 +56,10 @@ public class Account {
     // Getters et Setters
 
     public Long getId() {
-        return id;
+        return accountId;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public String getPassword() {
