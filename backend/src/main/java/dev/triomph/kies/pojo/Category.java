@@ -21,5 +21,27 @@ public class Category {
     
     
     // Getters et Setters
-    // ...
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Account getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Account creator) {
+        this.creator = creator;
+    }
 }

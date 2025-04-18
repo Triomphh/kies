@@ -75,7 +75,7 @@ public class Player {
         return account;
     }
     public void setAccount(Account account) {
-        // À implémenter
+        this.account = account;
     }
 
 }

@@ -29,5 +29,43 @@ public class Round {
 
 
     // Getters et Setters
-    // ...
+    public Long getRoundId() {
+        return roundId;
+    }
+
+    public void setRoundId(Long roundId) {
+        this.roundId = roundId;
+    }
+
+    public Integer getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void setRoundNumber(Integer roundNumber) {
+        this.roundNumber = roundNumber;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 }

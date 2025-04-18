@@ -37,5 +37,59 @@ public class Question {
     
     
     // Getters et Setters
-    // ...
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
+    }
+
+    public Integer getTurnNumber() {
+        return turnNumber;
+    }
+
+    public void setTurnNumber(Integer turnNumber) {
+        this.turnNumber = turnNumber;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Answer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
+    }
+
+    public Player getAsker() {
+        return asker;
+    }
+
+    public void setAsker(Player asker) {
+        this.asker = asker;
+    }
 }

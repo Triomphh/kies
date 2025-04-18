@@ -41,6 +41,67 @@ public class Game {
     
     
     // Getters et Setters
-    // ...
+    public Long getGameId() {
+        return gameId;
+    }
 
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
+
+    public Player getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Player creator) {
+        this.creator = creator;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
+    public Integer getMaxRounds() {
+        return maxRounds;
+    }
+
+    public void setMaxRounds(Integer maxRounds) {
+        this.maxRounds = maxRounds;
+    }
+
+    public Integer getTurnLimit() {
+        return turnLimit;
+    }
+
+    public void setTurnLimit(Integer turnLimit) {
+        this.turnLimit = turnLimit;
+    }
+
+    public LocalDateTime getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    public void setCreationTimestamp(LocalDateTime creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
 }
