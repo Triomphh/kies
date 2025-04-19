@@ -48,12 +48,11 @@ public class PlayerController {
             return ResponseEntity.badRequest().build();
         }
         
-        // Check if player with nickname already exists
-        if (playerService.getPlayerByNickname(nickname).isPresent()) {
+        Player player = playerService.createPlayer(nickname);
+        if (player == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         
-        Player player = playerService.createPlayer(nickname);
         return ResponseEntity.status(HttpStatus.CREATED).body(player);
     }
 
@@ -63,7 +62,7 @@ public class PlayerController {
             return ResponseEntity.notFound().build();
         }
         
-        player.setPlayerId(id); // Ensure ID is set correctly
+        player.setPlayerId(id);
         return ResponseEntity.ok(playerService.updatePlayer(player));
     }
 

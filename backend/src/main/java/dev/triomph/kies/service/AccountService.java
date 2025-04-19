@@ -29,6 +29,11 @@ public class AccountService {
     }
 
     public Account createAccount(Player player, String password, int age, Gender gender) {
+        // Check si le player a déjà un account
+        if (player.getAccount() != null || findAccountByPlayerId(player.getPlayerId()).isPresent()) {
+            return null;
+        }
+        
         Account account = new Account(player, password, age, gender);
         return accountDAO.save(account);
     }

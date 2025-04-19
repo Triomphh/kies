@@ -2,6 +2,7 @@ package dev.triomph.kies.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,17 +54,24 @@ public class AccountController {
             int age = (int) payload.get("age");
             Gender gender = Gender.valueOf((String) payload.get("gender"));
 
-            // First check if player exists
-            Player player = playerService.getPlayerByNickname(nickname)
-                    .orElseGet(() -> playerService.createPlayer(nickname));
-
-            // Check if player already has an account
-            if (player.getAccount() != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(null);
+            // Check si le joueur existe, sinon on le crée
+            Optional<Player> existingPlayer = playerService.getPlayerByNickname(nickname);
+            Player player;
+            
+            if (existingPlayer.isPresent()) {
+                player = existingPlayer.get();
+            } else {
+                player = playerService.createPlayer(nickname);
             }
 
+            // Crée le compte
             Account account = accountService.createAccount(player, password, age, gender);
+            
+            if (account == null) {
+                // Le joueur a déjà un compte
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(account);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

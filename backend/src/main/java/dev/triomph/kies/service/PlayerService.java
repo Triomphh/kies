@@ -32,6 +32,12 @@ public class PlayerService {
     }
 
     public Player createPlayer(String nickname) {
+        // check si le player existe déjà
+        Optional<Player> existingPlayer = playerDAO.findByNickname(nickname);
+        if (existingPlayer.isPresent()) {
+            return null;
+        }
+        
         Player player = new Player(nickname);
         return playerDAO.save(player);
     }
