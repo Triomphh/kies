@@ -10,8 +10,6 @@ L'image est un peu lourde (~500mb) mais elle comprend maven pour build directeme
 En prod on passera par une image avec JRE uniquement et on transférera le .jar précompilé dedans.
 
 
-LES POJOs SONT EXCLUS DU BUILD DANS CE COMMIT (pour ne pas empêcher le build) `pom.xml`
-
 
 # Instructions
 ## pgAdmin
@@ -34,7 +32,7 @@ Pour ajouter la database, il faut:
     - `Password`: kies
 4. `Save`
 
-Je sais pas si il y a une vue GUI pour voir les tables de la db, mais perso je passe par le Query Tool et `SELECT * FROM *` à l'ancienne.
+Pour voir le schéma de la db : clique droit sur kiesdb &rarr; `ERD for database`
 
 
 
