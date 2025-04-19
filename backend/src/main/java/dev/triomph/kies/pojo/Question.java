@@ -35,7 +35,29 @@ public class Question {
     @JoinColumn(name = "asker", referencedColumnName = "player_id")
     private Player asker;
     
+    // Constructeur par défaut
+    public Question() {
+        this.timestamp = LocalDateTime.now();
+        this.answer = Answer.PENDING; // Par défaut, la réponse est en attente
+    }
     
+    /**
+     * Crée une nouvelle question dans un round.
+     *
+     * @param text         Le texte de la question
+     * @param turnNumber   Le numéro du tour
+     * @param round        Le round associé
+     * @param asker        Le joueur qui pose la question
+     */
+    public Question(String text, Integer turnNumber, Round round, Player asker) {
+        this(); // Appel au constructeur par défaut pour initialiser le timestamp et la réponse
+        this.text = text;
+        this.turnNumber = turnNumber;
+        this.round = round;
+        this.asker = asker;
+    }
+    
+
     // Getters et Setters
     public Long getQuestionId() {
         return questionId;

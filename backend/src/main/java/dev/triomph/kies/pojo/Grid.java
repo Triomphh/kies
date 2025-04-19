@@ -57,6 +57,51 @@ public class Grid {
     @JoinColumn(name = "creator", referencedColumnName = "account_id")
     private Account creator;
     
+
+    /**
+     * Crée une nouvelle grille avec les informations essentielles.
+     *
+     * @param name     Le nom de la grille
+     * @param category La catégorie de la grille
+     * @param imageUrl L'URL de l'image de la grille
+     * @param rows     Le nombre de lignes
+     * @param columns  Le nombre de colonnes
+     */
+    public Grid(String name, Category category, String imageUrl, Integer rows, Integer columns) {
+        this.name = name;
+        this.category = category;
+        this.imageUrl = imageUrl;
+        this.rows = rows;
+        this.columns = columns;
+    }
+    
+    /**
+     * Crée une nouvelle grille avec les informations complètes.
+     *
+     * @param name     Le nom de la grille
+     * @param category La catégorie de la grille
+     * @param imageUrl L'URL de l'image de la grille
+     * @param rows     Le nombre de lignes
+     * @param columns  Le nombre de colonnes
+     * @param x        La position x de départ de la grille
+     * @param y        La position y de départ de la grille
+     * @param width    La largeur de la grille
+     * @param height   La hauteur de la grille
+     * @param gapX     L'espacement horizontal entre les cases
+     * @param gapY     L'espacement vertical entre les cases
+     * @param creator  Le compte qui a créé cette grille
+     */
+    public Grid(String name, Category category, String imageUrl, Integer rows, Integer columns, Integer x, Integer y, Integer width, Integer height, Integer gapX, Integer gapY, Account creator) {
+        this(name, category, imageUrl, rows, columns);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.gapX = gapX;
+        this.gapY = gapY;
+        this.creator = creator;
+    }
+
     
     // Getters et Setters
     public Long getGridId() {

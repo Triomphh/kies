@@ -39,7 +39,53 @@ public class Game {
     @JoinColumn(name = "grid_id", referencedColumnName = "grid_id")
     private Grid grid;
     
+
+    // Constructeur par défaut
+    public Game() {
+        this.creationTimestamp = LocalDateTime.now();
+    }
     
+    /**
+     * Crée une nouvelle partie avec uniquement les participants.
+     *
+     * @param creator    Le joueur qui crée la partie
+     * @param opponent   Le joueur adverse
+     */
+    public Game(Player creator, Player opponent) {
+        this(); // Appel au constructeur par défaut pour initialiser le timestamp
+        this.creator = creator;
+        this.opponent = opponent;
+    }
+
+    /**
+     * Crée une nouvelle partie avec les infos du nombre de tours et de manches.
+     *
+     * @param creator    Le joueur qui crée la partie
+     * @param opponent   Le joueur adverse
+     * @param maxRounds  Le nombre maximum de manches
+     * @param turnLimit  La limite de tours par manche
+     */
+    public Game(Player creator, Player opponent, Integer maxRounds, Integer turnLimit) {
+        this(creator, opponent);
+        this.maxRounds = maxRounds;
+        this.turnLimit = turnLimit;
+    }
+    
+    /**
+     * Crée un nouveau jeu avec les informations de base et la grille.
+     *
+     * @param creator    Le joueur qui crée la partie
+     * @param opponent   Le joueur adverse
+     * @param maxRounds  Le nombre maximum de manches
+     * @param turnLimit  La limite de tours par manche
+     * @param grid       La grille utilisée pour la partie
+     */
+    public Game(Player creator, Player opponent, Integer maxRounds, Integer turnLimit, Grid grid) {
+        this(creator, opponent, maxRounds, turnLimit);
+        this.grid = grid;
+    }
+    
+
     // Getters et Setters
     public Long getGameId() {
         return gameId;

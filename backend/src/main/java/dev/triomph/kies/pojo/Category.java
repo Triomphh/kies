@@ -19,7 +19,28 @@ public class Category {
     @JoinColumn(name = "creator", referencedColumnName = "account_id")
     private Account creator;
     
+
+    /**
+     * Crée une nouvelle catégorie avec un nom.
+     *
+     * @param name  Le nom de la catégorie
+     */
+    public Category(String name) {
+        this.name = name;
+    }
     
+    /**
+     * Crée une nouvelle catégorie avec un nom et son créateur.
+     *
+     * @param name     Le nom de la catégorie
+     * @param creator  Le compte (Account) qui a créé cette catégorie
+     */
+    public Category(String name, Account creator) {
+        this(name);
+        this.creator = creator;
+    }
+    
+
     // Getters et Setters
     public Long getCategoryId() {
         return categoryId;

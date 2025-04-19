@@ -28,6 +28,36 @@ public class Round {
     private Game game;
 
 
+    // Constructeur par défaut
+    public Round() {
+        this.status = Status.IN_PROGRESS;
+    }
+    
+    /**
+     * Crée un nouveau round
+     *
+     * @param roundNumber  Le numéro du round dans la partie
+     * @param game         La partie
+     */
+    public Round(Integer roundNumber, Game game) {
+        this();
+        this.roundNumber = roundNumber;
+        this.game = game;
+    }
+    
+    /**
+     * Crée un nouveau round avec son statut.
+     *
+     * @param roundNumber  Le numéro du round dans la partie
+     * @param game         La partie
+     * @param status       Le statut du round 
+     */
+    public Round(Integer roundNumber, Game game, Status status) {
+        this(roundNumber, game);
+        this.status = status;
+    }
+
+
     // Getters et Setters
     public Long getRoundId() {
         return roundId;
