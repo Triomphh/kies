@@ -10,6 +10,16 @@ L'image est un peu lourde (~500mb) mais elle comprend maven pour build directeme
 En prod on passera par une image avec JRE uniquement et on transférera le .jar précompilé dedans.
 
 
+##### Frontend
+``` bash
+http://localhost:3000
+npm run dev -- --open   #en local, sinon docker compose
+```
+##### Backend
+``` bash
+http://localhost:8080
+```
+
 
 # Instructions
 ## pgAdmin
