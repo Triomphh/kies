@@ -12,6 +12,17 @@ services:
       - SPRING_DATASOURCE_USERNAME=kies
       - SPRING_DATASOURCE_PASSWORD=kies
   
+  frontend:
+    image: 'kies-frontend:latest'
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - PUBLIC_API_URL=http://backend:8080
+  
   db:
     image: 'postgres:17-alpine'
     environment:
