@@ -1,8 +1,8 @@
 package dev.triomph.kies.pojo;
 
-// Représente l'état d'une partie.
+// Représente l'état d'un round.
 public enum Status {
-    PENDING,
+    IN_PROGRESS,
     COMPLETED, 
     CANCELLED   
 }
