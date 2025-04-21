@@ -1,7 +1,6 @@
 <script lang="ts">
   export let characterName: string;
   export let imageUrl: string = "https://placehold.co/121x166";
-  export let flipped: boolean = false;
   export let hovered: boolean = false;
   export let clicked: boolean = false;
 
@@ -14,7 +13,6 @@
 
 <div 
   class="card" 
-  class:flipped={flipped}
   class:hovered={hovered && !clicked}
   class:clicked={clicked}
   class:clicked-hovered={clicked && hovered}
@@ -117,14 +115,9 @@
     background: #DD3033;
   }
 
-  .card.flipped {
-    transform: rotateY(180deg);
-    opacity: 0.6;
-  }
-
   .card.clicked {
-    outline-color: rgba(255, 255, 255, 0.15);
     box-shadow: none;
+    opacity: 0.15;
   }
 
   .card.clicked::before {
@@ -134,7 +127,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.7);
     z-index: 1;
     border-radius: 8px;
   }
@@ -146,7 +138,6 @@
   }
 
   .card.clicked .frame-5 {
-    background: rgba(255, 255, 255, 0.15);
     position: relative;
     z-index: 2;
   }
