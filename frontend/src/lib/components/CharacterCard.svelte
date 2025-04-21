@@ -136,7 +136,7 @@
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.7);
     z-index: 1;
-    border-radius: 3px;
+    border-radius: 8px;
   }
 
   .card.clicked .andr_span {
