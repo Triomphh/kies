@@ -42,10 +42,15 @@
 
 <style>
   .andr_span {
+    font-family: 'Roboto Mono', monospace;
     font-size: 14px;
-    font-family: Roboto Mono;
+    font-style: normal;
     font-weight: 500;
     word-wrap: break-word;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 
   .andr {
