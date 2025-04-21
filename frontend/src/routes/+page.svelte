@@ -4,6 +4,7 @@
   import AddCard from '$lib/components/AddCard.svelte';
   import BackButton from '$lib/components/BackButton.svelte';
   import LeaveButton from '$lib/components/LeaveButton.svelte';
+  import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
 </script>
 
 <main>
@@ -23,6 +24,7 @@
 
   <div class="button-container">
     <GridButton />
+    <LeaderboardButton />
     <BackButton />
     <LeaveButton />
   </div>
