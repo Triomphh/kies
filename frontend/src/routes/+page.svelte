@@ -6,6 +6,7 @@
   import LeaveButton from '$lib/components/LeaveButton.svelte';
   import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
   import OkButton from '$lib/components/OkButton.svelte';
+  import CloseButton from '$lib/components/CloseButton.svelte';
 </script>
 
 <main>
@@ -29,6 +30,7 @@
     <BackButton />
     <LeaveButton />
     <OkButton />
+    <CloseButton />
   </div>
 
   <p>Démo des boutons</p>
