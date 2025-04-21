@@ -5,6 +5,7 @@
   import BackButton from '$lib/components/BackButton.svelte';
   import LeaveButton from '$lib/components/LeaveButton.svelte';
   import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
+  import OkButton from '$lib/components/OkButton.svelte';
 </script>
 
 <main>
@@ -27,6 +28,7 @@
     <LeaderboardButton />
     <BackButton />
     <LeaveButton />
+    <OkButton />
   </div>
 
   <p>Démo des boutons</p>
@@ -68,6 +70,7 @@
     margin-top: 2em;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
   }
 </style>
