@@ -2,6 +2,7 @@
   import CharacterCard from '$lib/components/CharacterCard.svelte';
   import GridButton from '$lib/components/GridButton.svelte';
   import AddCard from '$lib/components/AddCard.svelte';
+  import BackButton from '$lib/components/BackButton.svelte';
 </script>
 
 <main>
@@ -17,9 +18,14 @@
   
   <p>Démo d'une carte d'un personnage</p>
   
+  <div class="spacer"></div>
+
   <div class="button-container">
     <GridButton />
+    <BackButton />
   </div>
+
+  <p>Démo des boutons</p>
 </main>
 
 <style>
@@ -44,9 +50,14 @@
     margin: 2em 0;
   }
   
+  .spacer {
+    height: 40px;
+  }
+  
   .button-container {
     margin-top: 2em;
     display: flex;
     justify-content: center;
+    gap: 20px;
   }
 </style>
