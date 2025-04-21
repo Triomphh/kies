@@ -83,3 +83,4 @@ et Spring Test... mais tester c'est douter donc pas Spring Test
 - [DAO avec SpringBoot Data JPA](https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa)
 - [DAO avec JPA](https://www.geeksforgeeks.org/data-access-object-pattern/)
 - [DAO vs Repository](https://stackoverflow.com/questions/59797882/is-jparepository-interface-covers-the-responsibilities-of-dao-interface-in-sprin)
+- [SvelteKit](https://svelte.dev/docs/svelte/getting-started)
