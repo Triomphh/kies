@@ -1,6 +1,7 @@
 <script>
   import CharacterCard from '$lib/components/CharacterCard.svelte';
   import GridButton from '$lib/components/GridButton.svelte';
+  import AddCard from '$lib/components/AddCard.svelte';
 </script>
 
 <main>
@@ -11,6 +12,7 @@
       characterName="ANDRÉ" 
       imageUrl="/images/andre.png" 
     />
+    <AddCard />
   </div>
   
   <p>Démo d'une carte d'un personnage</p>
@@ -38,6 +40,7 @@
   .card-container {
     display: flex;
     justify-content: center;
+    gap: 20px;
     margin: 2em 0;
   }
   
