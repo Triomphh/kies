@@ -79,7 +79,7 @@
 
   .statedefault:active {
     background: #E74646;
-    box-shadow: 0px 4px 0px #BDDFFF inset;
+    box-shadow: 0px 4px 0px #BDDFFF inset, 0px 4px 0px #E74646;
     padding-top: 13px;
     padding-bottom: 5px;
   }

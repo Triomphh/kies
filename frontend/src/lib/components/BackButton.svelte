@@ -74,7 +74,7 @@
 
   .buttonback-default:active {
     background: #F45E5E;
-    box-shadow: 0px 4px 0px #BDDFFF inset;
+    box-shadow: 0px 4px 0px #BDDFFF inset, 0px 4px 0px #F45E5E;
     padding-top: 13px;
     padding-bottom: 5px;
   }
