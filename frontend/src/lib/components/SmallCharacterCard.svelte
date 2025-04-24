@@ -49,7 +49,8 @@
     align-items: center;
     gap: 10px;
     border-radius: 8px;
-    border: 4px solid #FFF;
+    outline: 5px solid #FFF;
+    outline-offset: -4px;
     transition: transform 0.2s ease, z-index 0.01s linear;
     z-index: 1;
   }
