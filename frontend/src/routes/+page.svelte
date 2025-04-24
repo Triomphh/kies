@@ -3,6 +3,7 @@
   import SmallCharacterCard from '$lib/components/SmallCharacterCard.svelte';
   import GridButton from '$lib/components/GridButton.svelte';
   import GridPreviewButton from '$lib/components/GridPreviewButton.svelte';
+  import GridAddButton from '$lib/components/GridAddButton.svelte';
   import AddCard from '$lib/components/AddCard.svelte';
   import BackButton from '$lib/components/BackButton.svelte';
   import LeaveButton from '$lib/components/LeaveButton.svelte';
@@ -67,7 +68,11 @@
     />
   </div>
 
-  <p>Démo d'une preview de grille</p>
+  <div class="grid-add-container">
+    <GridAddButton />
+  </div>
+
+  <p>Grids preview</p>
 
   <div class="spacer"></div>
 
@@ -130,4 +135,9 @@
     margin: 2em 0;
   }
   
+  .grid-add-container {
+    display: flex;
+    justify-content: center;
+    margin: 1em 0;
+  }
 </style>
