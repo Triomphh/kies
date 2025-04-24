@@ -7,6 +7,20 @@
   import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
   import OkButton from '$lib/components/OkButton.svelte';
   import CloseButton from '$lib/components/CloseButton.svelte';
+  import PopupLeaveButton from '$lib/components/PopupLeaveButton.svelte';
+  import PopupCancelButton from '$lib/components/PopupCancelButton.svelte';
+  import LeaveConfirmationDialog from '$lib/components/LeaveConfirmationDialog.svelte';
+  
+  let showLeaveConfirmation = false;
+  
+  function toggleLeaveConfirmation() {
+    showLeaveConfirmation = !showLeaveConfirmation;
+  }
+  
+  function handleLeave() {
+    showLeaveConfirmation = false;
+    console.log('User decided to leave');
+  }
 </script>
 
 <main>
@@ -31,9 +45,24 @@
     <LeaveButton />
     <OkButton />
     <CloseButton />
+    <PopupLeaveButton />
+    <PopupCancelButton />
   </div>
 
   <p>Démo des boutons</p>
+  
+  <div class="spacer"></div>
+
+  <LeaveButton onClick={toggleLeaveConfirmation} />
+  
+  <LeaveConfirmationDialog 
+    isVisible={showLeaveConfirmation} 
+    onClose={toggleLeaveConfirmation} 
+    onLeave={handleLeave} 
+  />
+
+  <p>Démo popups</p>
+
 </main>
 
 <style>
@@ -75,4 +104,5 @@
     flex-wrap: wrap;
     gap: 20px;
   }
+  
 </style>
