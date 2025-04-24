@@ -1,6 +1,8 @@
 <script>
   import CharacterCard from '$lib/components/CharacterCard.svelte';
+  import SmallCharacterCard from '$lib/components/SmallCharacterCard.svelte';
   import GridButton from '$lib/components/GridButton.svelte';
+  import GridPreviewButton from '$lib/components/GridPreviewButton.svelte';
   import AddCard from '$lib/components/AddCard.svelte';
   import BackButton from '$lib/components/BackButton.svelte';
   import LeaveButton from '$lib/components/LeaveButton.svelte';
@@ -53,6 +55,22 @@
   
   <div class="spacer"></div>
 
+  <div class="grid-preview-container">
+    <GridPreviewButton 
+      gridName="GRID NAME"
+      author="Jackie36"
+      characters={[
+        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
+        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
+        { name: "PABLO", imageUrl: "/images/cop.png" }
+      ]}
+    />
+  </div>
+
+  <p>Démo d'une preview de grille</p>
+
+  <div class="spacer"></div>
+
   <LeaveButton onClick={toggleLeaveConfirmation} />
   
   <LeaveConfirmationDialog 
@@ -103,6 +121,13 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
+  }
+  
+  .grid-preview-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 2em 0;
   }
   
 </style>
