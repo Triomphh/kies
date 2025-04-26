@@ -13,6 +13,7 @@
   import PopupLeaveButton from '$lib/components/PopupLeaveButton.svelte';
   import PopupCancelButton from '$lib/components/PopupCancelButton.svelte';
   import LeaveConfirmationDialog from '$lib/components/LeaveConfirmationDialog.svelte';
+  import BackgroundLayout from '$lib/components/BackgroundLayout.svelte';
   
   let showLeaveConfirmation = false;
   
@@ -26,75 +27,71 @@
   }
 </script>
 
-<main>
-  <h1>Kies</h1>
-  
-  <div class="card-container">
-    <CharacterCard 
-      characterName="ANDRÉ" 
-      imageUrl="/images/andre.png" 
+<BackgroundLayout>
+  <main>
+    <h1>Kies</h1>
+    
+    <div class="card-container">
+      <CharacterCard 
+        characterName="ANDRÉ" 
+        imageUrl="/images/andre.png" 
+      />
+      <AddCard />
+    </div>
+    
+    <p>Démo d'une carte d'un personnage</p>
+    
+    <div class="spacer"></div>
+
+    <div class="button-container">
+      <GridButton />
+      <LeaderboardButton />
+      <BackButton />
+      <LeaveButton />
+      <OkButton />
+      <CloseButton />
+      <PopupLeaveButton />
+      <PopupCancelButton />
+    </div>
+
+    <p>Démo des boutons</p>
+    
+    <div class="spacer"></div>
+
+    <div class="grid-preview-container">
+      <GridPreviewButton 
+        gridName="GRID NAME"
+        author="Jackie36"
+        characters={[
+          { name: "MACRON", imageUrl: "/images/macron.jpeg" },
+          { name: "ANDRÉ", imageUrl: "/images/andre.png" },
+          { name: "PABLO", imageUrl: "/images/cop.png" }
+        ]}
+      />
+    </div>
+
+    <div class="grid-add-container">
+      <GridAddButton />
+    </div>
+
+    <p>Grids preview</p>
+
+    <div class="spacer"></div>
+
+    <LeaveButton onClick={toggleLeaveConfirmation} />
+    
+    <LeaveConfirmationDialog 
+      isVisible={showLeaveConfirmation} 
+      onClose={toggleLeaveConfirmation} 
+      onLeave={handleLeave} 
     />
-    <AddCard />
-  </div>
-  
-  <p>Démo d'une carte d'un personnage</p>
-  
-  <div class="spacer"></div>
 
-  <div class="button-container">
-    <GridButton />
-    <LeaderboardButton />
-    <BackButton />
-    <LeaveButton />
-    <OkButton />
-    <CloseButton />
-    <PopupLeaveButton />
-    <PopupCancelButton />
-  </div>
+    <p>Démo popups</p>
 
-  <p>Démo des boutons</p>
-  
-  <div class="spacer"></div>
-
-  <div class="grid-preview-container">
-    <GridPreviewButton 
-      gridName="GRID NAME"
-      author="Jackie36"
-      characters={[
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]}
-    />
-  </div>
-
-  <div class="grid-add-container">
-    <GridAddButton />
-  </div>
-
-  <p>Grids preview</p>
-
-  <div class="spacer"></div>
-
-  <LeaveButton onClick={toggleLeaveConfirmation} />
-  
-  <LeaveConfirmationDialog 
-    isVisible={showLeaveConfirmation} 
-    onClose={toggleLeaveConfirmation} 
-    onLeave={handleLeave} 
-  />
-
-  <p>Démo popups</p>
-
-</main>
+  </main>
+</BackgroundLayout>
 
 <style>
-  :global(body) {
-    background-color: #BDDFFF;
-    margin: 0;
-    padding: 0;
-  }
-
   main {
     text-align: center;
     padding: 1em;

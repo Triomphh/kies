@@ -1,0 +1,75 @@
+<script>
+  export let showClouds = true;
+  export let showGrass = true;
+</script>
+
+<div class="background-container">
+  {#if showGrass}
+    <div class="grass"></div>
+  {/if}
+  
+  {#if showClouds}
+    <div class="cloud1"></div>
+    <div class="cloud2"></div>
+  {/if}
+  
+  <div class="content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .background-container {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    position: relative;
+    background: #BDDFFF;
+    overflow: hidden;
+  }
+
+  .grass {
+    width: 2056px;
+    height: 232px;
+    left: -68px;
+    bottom: 0;
+    position: fixed;
+    background: #56BF72;
+    box-shadow: 242.39999389648438px 242.39999389648438px 242.39999389648438px;
+    filter: blur(121.20px);
+    z-index: 0;
+  }
+
+  .cloud1 {
+    width: 352px;
+    height: 88px;
+    flex-shrink: 0;
+    left: 183px;
+    top: 128px;
+    position: fixed;
+    background: rgba(255, 255, 255, 0.60);
+    border-radius: 352px;
+    filter: blur(25.600000381469727px);
+    z-index: 1;
+  }
+
+  .cloud2 {
+    width: 352px;
+    height: 100px;
+    flex-shrink: 0;
+    left: calc(100% - 544px);
+    top: 149px;
+    position: fixed;
+    background: rgba(255, 255, 255, 0.60);
+    border-radius: 352px;
+    filter: blur(27.899999618530273px);
+    z-index: 1;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+  }
+</style>
