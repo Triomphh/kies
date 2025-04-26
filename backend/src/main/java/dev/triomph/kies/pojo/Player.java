@@ -11,7 +11,7 @@ public class Player {
     @Column(name = "player_id")
     private Long playerId;
 
-    @Column(unique = true, nullable = false, length = 50)
+    @Column(/*unique = true,*/ nullable = false, length = 50)
     private String nickname;
 
     private int gamesPlayed;
