@@ -29,15 +29,16 @@
   }
 
   .grass {
-    width: 2056px;
+    width: 110%;
     height: 232px;
-    left: -68px;
+    left: -5%;
     bottom: 0;
     position: fixed;
     background: #56BF72;
     box-shadow: 242.39999389648438px 242.39999389648438px 242.39999389648438px;
     filter: blur(121.20px);
     z-index: 0;
+    transform: translateY(50%);
   }
 
   .cloud1 {
