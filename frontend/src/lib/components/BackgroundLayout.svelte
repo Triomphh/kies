@@ -19,6 +19,13 @@
 </div>
 
 <style>
+  /* Enlève la margin de base du <body> qui cause une bordure blanche */
+  :global(body), :global(html) {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   .background-container {
     width: 100%;
     height: 100%;
