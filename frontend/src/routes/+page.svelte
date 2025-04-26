@@ -14,6 +14,7 @@
   import PopupCancelButton from '$lib/components/PopupCancelButton.svelte';
   import LeaveConfirmationDialog from '$lib/components/LeaveConfirmationDialog.svelte';
   import BackgroundLayout from '$lib/components/BackgroundLayout.svelte';
+  import GameSessionCard from '$lib/components/GameSessionCard.svelte';
   
   let showLeaveConfirmation = false;
   
@@ -23,7 +24,15 @@
   
   function handleLeave() {
     showLeaveConfirmation = false;
-    console.log('User decided to leave');
+    console.log('LEAVE - GAME');
+  }
+  
+  function handleJoinGame() {
+    console.log('JOIN - GAME SESSION');
+  }
+  
+  function handleSpectateGame() {
+    console.log('SPECTATE - GAME SESSION');
   }
 </script>
 
@@ -88,6 +97,28 @@
 
     <p>Démo popups</p>
 
+    <div class="spacer"></div>
+
+    <div class="game-session-container">
+      <GameSessionCard 
+        player1Name="JACOB"
+        player1Image="/images/cop.png"
+        isFull={false}
+        onJoin={handleJoinGame}
+      />
+      
+      <GameSessionCard 
+        player1Name="JACOB"
+        player1Image="/images/cop.png"
+        player2Name="JOJO"
+        player2Image="/images/andre.png"
+        isFull={true}
+        onSpectate={handleSpectateGame}
+      />
+    </div>
+
+    <p>Démo preview de partie ouverte ou en cours</p>
+
   </main>
 </BackgroundLayout>
 
@@ -136,5 +167,13 @@
     display: flex;
     justify-content: center;
     margin: 1em 0;
+  }
+  
+  .game-session-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 2em 0;
   }
 </style>
