@@ -1,6 +1,5 @@
 <script>
   import CharacterCard from '$lib/components/CharacterCard.svelte';
-  import SmallCharacterCard from '$lib/components/SmallCharacterCard.svelte';
   import GridButton from '$lib/components/GridButton.svelte';
   import GridPreviewButton from '$lib/components/GridPreviewButton.svelte';
   import GridAddButton from '$lib/components/GridAddButton.svelte';
@@ -15,8 +14,25 @@
   import LeaveConfirmationDialog from '$lib/components/LeaveConfirmationDialog.svelte';
   import BackgroundLayout from '$lib/components/BackgroundLayout.svelte';
   import GameSessionCard from '$lib/components/GameSessionCard.svelte';
+  import GameChatWindow from '$lib/components/GameChatWindow.svelte';
   
   let showLeaveConfirmation = false;
+  let chatMessage = "";
+  
+  let chatMessages = [
+    {
+      username: "JACOB",
+      avatarSrc: "/images/cop.png",
+      message: "salut mon caillou",
+      isCurrentUser: true
+    },
+    {
+      username: "JOJO",
+      avatarSrc: "/images/andre.png",
+      message: "pk je suis sur les images??",
+      isCurrentUser: false
+    }
+  ];
   
   function toggleLeaveConfirmation() {
     showLeaveConfirmation = !showLeaveConfirmation;
@@ -119,6 +135,17 @@
 
     <p>Démo preview de partie ouverte ou en cours</p>
 
+    <div class="spacer"></div>
+    
+    <div class="chat-container">
+      <GameChatWindow 
+        messages={chatMessages}
+        currentUsername="JACOB"
+      />
+    </div>
+    
+    <p>Démo du chat</p>
+
   </main>
 </BackgroundLayout>
 
@@ -174,6 +201,12 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 30px;
+    margin: 2em 0;
+  }
+  
+  .chat-container {
+    display: flex;
+    justify-content: center;
     margin: 2em 0;
   }
 </style>
