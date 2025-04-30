@@ -16,6 +16,7 @@
   import GameSessionCard from '$lib/components/GameSessionCard.svelte';
   import GameChatWindow from '$lib/components/GameChatWindow.svelte';
   import ChooseButton from '$lib/components/ChooseButton.svelte';
+  import Navbar from '$lib/components/Navbar.svelte';
   
   let showLeaveConfirmation = false;
   let chatMessage = "";
@@ -57,112 +58,146 @@
     isChooseActive = !isChooseActive;
     console.log(`ChooseButton is now ${isChooseActive ? 'active' : 'inactive'}`);
   }
+  
+  function handleLeaderboardClick() {
+    console.log('Leaderboard button clicked');
+  }
+  
+  function handleGridClick() {
+    console.log('Grid button clicked');
+  }
+  
+  function handleAvatarClick() {
+    console.log('Avatar button clicked');
+  }
 </script>
 
 <BackgroundLayout>
-  <main>
-    <h1>Kies</h1>
-    
-    <div class="card-container">
-      <CharacterCard 
-        characterName="ANDRÉ" 
-        imageUrl="/images/andre.png" 
-      />
-      <AddCard />
-    </div>
-    
-    <p>Démo d'une carte d'un personnage</p>
-    
-    <div class="spacer"></div>
-
-    <div class="button-container">
-      <GridButton />
-      <LeaderboardButton />
-      <BackButton />
-      <LeaveButton />
-      <OkButton />
-      <CloseButton />
-      <PopupLeaveButton />
-      <PopupCancelButton />
-      <ChooseButton isActive={isChooseActive} onClick={toggleChooseButton} />
-    </div>
-
-    <p>Démo des boutons</p>
-    
-    <div class="spacer"></div>
-
-    <div class="grid-preview-container">
-      <GridPreviewButton 
-        gridName="GRID NAME"
-        author="Jackie36"
-        characters={[
-          { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-          { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-          { name: "PABLO", imageUrl: "/images/cop.png" }
-        ]}
-      />
-    </div>
-
-    <div class="grid-add-container">
-      <GridAddButton />
-    </div>
-
-    <p>Grids preview</p>
-
-    <div class="spacer"></div>
-
-    <LeaveButton onClick={toggleLeaveConfirmation} />
-    
-    <LeaveConfirmationDialog 
-      isVisible={showLeaveConfirmation} 
-      onClose={toggleLeaveConfirmation} 
-      onLeave={handleLeave} 
+  <div class="app-container">
+    <Navbar 
+      avatarUrl="/images/cop.png"
+      avatarAlt="Player avatar"
+      onLeaderboardClick={handleLeaderboardClick}
+      onGridClick={handleGridClick}
+      onAvatarClick={handleAvatarClick}
     />
-
-    <p>Démo popups</p>
-
-    <div class="spacer"></div>
-
-    <div class="game-session-container">
-      <GameSessionCard 
-        player1Name="JACOB"
-        player1Image="/images/cop.png"
-        isFull={false}
-        onJoin={handleJoinGame}
-      />
+    <main>
+      <h1>Kies</h1>
       
-      <GameSessionCard 
-        player1Name="JACOB"
-        player1Image="/images/cop.png"
-        player2Name="JOJO"
-        player2Image="/images/andre.png"
-        isFull={true}
-        onSpectate={handleSpectateGame}
+      <div class="spacer navbar-spacer"></div>
+      
+      <div class="card-container">
+        <CharacterCard 
+          characterName="ANDRÉ" 
+          imageUrl="/images/andre.png" 
+        />
+        <AddCard />
+      </div>
+      
+      <p>Démo d'une carte d'un personnage</p>
+      
+      <div class="spacer"></div>
+
+      <div class="button-container">
+        <GridButton />
+        <LeaderboardButton />
+        <BackButton />
+        <LeaveButton />
+        <OkButton />
+        <CloseButton />
+        <PopupLeaveButton />
+        <PopupCancelButton />
+        <ChooseButton isActive={isChooseActive} onClick={toggleChooseButton} />
+      </div>
+
+      <p>Démo des boutons</p>
+      
+      <div class="spacer"></div>
+
+      <div class="grid-preview-container">
+        <GridPreviewButton 
+          gridName="GRID NAME"
+          author="Jackie36"
+          characters={[
+            { name: "MACRON", imageUrl: "/images/macron.jpeg" },
+            { name: "ANDRÉ", imageUrl: "/images/andre.png" },
+            { name: "PABLO", imageUrl: "/images/cop.png" }
+          ]}
+        />
+      </div>
+
+      <div class="grid-add-container">
+        <GridAddButton />
+      </div>
+
+      <p>Grids preview</p>
+
+      <div class="spacer"></div>
+
+      <LeaveButton onClick={toggleLeaveConfirmation} />
+      
+      <LeaveConfirmationDialog 
+        isVisible={showLeaveConfirmation} 
+        onClose={toggleLeaveConfirmation} 
+        onLeave={handleLeave} 
       />
-    </div>
 
-    <p>Démo preview de partie ouverte ou en cours</p>
+      <p>Démo popups</p>
 
-    <div class="spacer"></div>
-    
-    <div class="chat-container">
-      <GameChatWindow 
-        messages={chatMessages}
-        currentUsername="JACOB"
-      />
-    </div>
-    
-    <p>Démo du chat</p>
+      <div class="spacer"></div>
 
-  </main>
+      <div class="game-session-container">
+        <GameSessionCard 
+          player1Name="JACOB"
+          player1Image="/images/cop.png"
+          isFull={false}
+          onJoin={handleJoinGame}
+        />
+        
+        <GameSessionCard 
+          player1Name="JACOB"
+          player1Image="/images/cop.png"
+          player2Name="JOJO"
+          player2Image="/images/andre.png"
+          isFull={true}
+          onSpectate={handleSpectateGame}
+        />
+      </div>
+
+      <p>Démo preview de partie ouverte ou en cours</p>
+
+      <div class="spacer"></div>
+      
+      <div class="chat-container">
+        <GameChatWindow 
+          messages={chatMessages}
+          currentUsername="JACOB"
+        />
+      </div>
+      
+      <p>Démo du chat</p>
+
+    </main>
+  </div>
 </BackgroundLayout>
 
 <style>
+  .app-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .navbar-spacer {
+    height: 120px; /* Provides space for the fixed navbar */
+  }
+
   main {
     text-align: center;
     padding: 1em;
     max-width: 800px;
     margin: 0 auto;
+    padding-top: 20px;
   }
 
   h1 {

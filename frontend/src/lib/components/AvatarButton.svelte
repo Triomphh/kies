@@ -26,7 +26,6 @@
     border-radius: 9999px;
     border: 4px white solid;
     box-sizing: border-box;
-    transition: border-color 0.2s ease;
     object-fit: cover;
     object-position: center;
   }
