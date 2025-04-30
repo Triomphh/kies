@@ -15,9 +15,11 @@
   import BackgroundLayout from '$lib/components/BackgroundLayout.svelte';
   import GameSessionCard from '$lib/components/GameSessionCard.svelte';
   import GameChatWindow from '$lib/components/GameChatWindow.svelte';
+  import ChooseButton from '$lib/components/ChooseButton.svelte';
   
   let showLeaveConfirmation = false;
   let chatMessage = "";
+  let isChooseActive = false;
   
   let chatMessages = [
     {
@@ -50,6 +52,11 @@
   function handleSpectateGame() {
     console.log('SPECTATE - GAME SESSION');
   }
+  
+  function toggleChooseButton() {
+    isChooseActive = !isChooseActive;
+    console.log(`ChooseButton is now ${isChooseActive ? 'active' : 'inactive'}`);
+  }
 </script>
 
 <BackgroundLayout>
@@ -77,6 +84,7 @@
       <CloseButton />
       <PopupLeaveButton />
       <PopupCancelButton />
+      <ChooseButton isActive={isChooseActive} onClick={toggleChooseButton} />
     </div>
 
     <p>Démo des boutons</p>
@@ -209,4 +217,4 @@
     justify-content: center;
     margin: 2em 0;
   }
-</style>
+  </style>
