@@ -46,39 +46,54 @@ public class GridController {
         try {
             String name = (String) payload.get("name");
             Long categoryId = Long.parseLong(payload.get("categoryId").toString());
-            String imageUrl = (String) payload.get("imageUrl");
-            Integer rows = (Integer) payload.get("rows");
-            Integer columns = (Integer) payload.get("columns");
-            Integer x = (Integer) payload.get("x");
-            Integer y = (Integer) payload.get("y");
-            Integer height = (Integer) payload.get("height");
-            Integer width = (Integer) payload.get("width");
-            Integer gapX = (Integer) payload.get("gapX");
-            Integer gapY = (Integer) payload.get("gapY");
             Long creatorId = Long.parseLong(payload.get("creatorId").toString());
 
             Optional<Category> categoryOpt = categoryService.getCategoryById(categoryId);
             Optional<Account> creatorOpt = accountService.getAccountById(creatorId);
-
+            
             if (categoryOpt.isPresent() && creatorOpt.isPresent()) {
                 Grid grid = gridService.createGrid(
                     name,
                     categoryOpt.get(),
-                    imageUrl,
-                    rows,
-                    columns,
-                    x,
-                    y,
-                    height,
-                    width,
-                    gapX,
-                    gapY,
                     creatorOpt.get()
                 );
                 return ResponseEntity.status(HttpStatus.CREATED).body(grid);
             } else {
                 return ResponseEntity.badRequest().build();
             }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+    
+    @PostMapping("/{id}/characters")
+    public ResponseEntity<Grid> addCharacterToGrid(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
+        try {
+            String name = (String) payload.get("name");
+            String imageUrl = (String) payload.get("imageUrl");
+            Long creatorId = Long.parseLong(payload.get("creatorId").toString());
+
+            Optional<Account> creatorOpt = accountService.getAccountById(creatorId);
+            
+            if (creatorOpt.isPresent()) {
+                Grid updatedGrid = gridService.addCharacterToGrid(id, name, imageUrl, creatorOpt.get());
+                return ResponseEntity.ok(updatedGrid);
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+    
+    @DeleteMapping("/{gridId}/characters/{characterId}")
+    public ResponseEntity<Grid> removeCharacterFromGrid(@PathVariable Long gridId, @PathVariable Long characterId) {
+        try {
+            Grid updatedGrid = gridService.removeCharacterFromGrid(gridId, characterId);
+            return ResponseEntity.ok(updatedGrid);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
