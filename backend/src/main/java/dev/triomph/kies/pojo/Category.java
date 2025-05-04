@@ -19,6 +19,10 @@ public class Category {
     @JoinColumn(name = "creator", referencedColumnName = "account_id")
     private Account creator;
     
+    /**
+     * Constructeur par défaut pour JPA.
+     */
+    public Category() {}
 
     /**
      * Crée une nouvelle catégorie avec un nom.
