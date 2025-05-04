@@ -1,255 +1,162 @@
 <script>
-  import CharacterCard from '$lib/components/CharacterCard.svelte';
-  import GridButton from '$lib/components/GridButton.svelte';
-  import GridPreviewButton from '$lib/components/GridPreviewButton.svelte';
-  import GridAddButton from '$lib/components/GridAddButton.svelte';
-  import AddCard from '$lib/components/AddCard.svelte';
-  import BackButton from '$lib/components/BackButton.svelte';
-  import LeaveButton from '$lib/components/LeaveButton.svelte';
-  import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
-  import OkButton from '$lib/components/OkButton.svelte';
-  import CloseButton from '$lib/components/CloseButton.svelte';
-  import PopupLeaveButton from '$lib/components/PopupLeaveButton.svelte';
-  import PopupCancelButton from '$lib/components/PopupCancelButton.svelte';
-  import LeaveConfirmationDialog from '$lib/components/LeaveConfirmationDialog.svelte';
   import BackgroundLayout from '$lib/components/BackgroundLayout.svelte';
-  import GameSessionCard from '$lib/components/GameSessionCard.svelte';
-  import GameChatWindow from '$lib/components/GameChatWindow.svelte';
-  import ChooseButton from '$lib/components/ChooseButton.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
+  import GameSessionCard from '$lib/components/GameSessionCard.svelte';
+  import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
+  import GridButton from '$lib/components/GridButton.svelte';
+  import { goto } from '$app/navigation';
   
-  let showLeaveConfirmation = false;
-  let chatMessage = "";
-  let isChooseActive = false;
+  const emptyGameSessions = [
+    { player1Name: "JACOB", player1Image: "/images/cop.png" },
+    { player1Name: "JACOB", player1Image: "/images/cop.png" },
+    { player1Name: "JACOB", player1Image: "/images/cop.png" }
+  ];
   
-  let chatMessages = [
-    {
-      username: "JACOB",
-      avatarSrc: "/images/cop.png",
-      message: "salut mon caillou",
-      isCurrentUser: true
+  const fullGameSessions = [
+    { 
+      player1Name: "JACOB", 
+      player1Image: "/images/cop.png",
+      player2Name: "JOJO",
+      player2Image: "/images/andre.png"
     },
-    {
-      username: "JOJO",
-      avatarSrc: "/images/andre.png",
-      message: "pk je suis sur les images??",
-      isCurrentUser: false
+    { 
+      player1Name: "JACOB", 
+      player1Image: "/images/cop.png",
+      player2Name: "JOJO",
+      player2Image: "/images/andre.png"
     }
   ];
   
-  function toggleLeaveConfirmation() {
-    showLeaveConfirmation = !showLeaveConfirmation;
-  }
+  // Event handlers
+  const handleJoinGame = () => {
+    console.log("Join game clicked");
+  };
   
-  function handleLeave() {
-    showLeaveConfirmation = false;
-    console.log('LEAVE - GAME');
-  }
+  const handleSpectateGame = () => {
+    console.log("Spectate game clicked");
+  };
   
-  function handleJoinGame() {
-    console.log('JOIN - GAME SESSION');
-  }
+  const handleLeaderboardClick = () => {
+    console.log("Leaderboard clicked");
+  };
   
-  function handleSpectateGame() {
-    console.log('SPECTATE - GAME SESSION');
-  }
+  const handleGridClick = () => {
+    goto('/grids');
+  };
   
-  function toggleChooseButton() {
-    isChooseActive = !isChooseActive;
-    console.log(`ChooseButton is now ${isChooseActive ? 'active' : 'inactive'}`);
-  }
+  const handleAvatarClick = () => {
+    console.log("Avatar clicked");
+  };
   
-  function handleLeaderboardClick() {
-    console.log('Leaderboard button clicked');
-  }
-  
-  function handleGridClick() {
-    console.log('Grid button clicked');
-  }
-  
-  function handleAvatarClick() {
-    console.log('Avatar button clicked');
-  }
+  const customButtons = [
+    {
+      component: LeaderboardButton,
+      props: { onClick: handleLeaderboardClick }
+    },
+    {
+      component: GridButton,
+      props: { onClick: handleGridClick }
+    }
+  ];
 </script>
 
 <BackgroundLayout>
-  <div class="app-container">
+  <div class="home-container">
     <Navbar 
-      avatarUrl="/images/cop.png"
-      avatarAlt="Player avatar"
-      onLeaderboardClick={handleLeaderboardClick}
-      onGridClick={handleGridClick}
+      avatarUrl="https://placehold.co/88x88" 
+      avatarAlt="User avatar" 
       onAvatarClick={handleAvatarClick}
+      customButtons={customButtons}
     />
-    <main>
-      <h1>Kies</h1>
-      
-      <div class="spacer navbar-spacer"></div>
-      
-      <div class="card-container">
-        <CharacterCard 
-          characterName="ANDRÉ" 
-          imageUrl="/images/andre.png" 
-        />
-        <AddCard />
+    
+    <div class="content-container">
+      <div class="game-sessions-container">
+        <div class="game-sessions-grid">
+          {#each emptyGameSessions as session}
+            <GameSessionCard 
+              player1Name={session.player1Name} 
+              player1Image={session.player1Image} 
+              isFull={false} 
+              onJoin={handleJoinGame} 
+            />
+          {/each}
+          
+          {#each fullGameSessions as session}
+            <GameSessionCard 
+              player1Name={session.player1Name} 
+              player1Image={session.player1Image}
+              player2Name={session.player2Name}
+              player2Image={session.player2Image}
+              isFull={true}
+              onSpectate={handleSpectateGame}
+            />
+          {/each}
+        </div>
       </div>
       
-      <p>Démo d'une carte d'un personnage</p>
-      
-      <div class="spacer"></div>
-
-      <div class="button-container">
-        <GridButton />
-        <LeaderboardButton />
-        <BackButton />
-        <LeaveButton />
-        <OkButton />
-        <CloseButton />
-        <PopupLeaveButton />
-        <PopupCancelButton />
-        <ChooseButton isActive={isChooseActive} onClick={toggleChooseButton} />
+      <div class="divider">
+        <span>OU</span>
       </div>
-
-      <p>Démo des boutons</p>
       
-      <div class="spacer"></div>
-
-      <div class="grid-preview-container">
-        <GridPreviewButton 
-          gridName="GRID NAME"
-          author="Jackie36"
-          characters={[
-            { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-            { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-            { name: "PABLO", imageUrl: "/images/cop.png" }
-          ]}
-        />
-      </div>
-
-      <div class="grid-add-container">
-        <GridAddButton />
-      </div>
-
-      <p>Grids preview</p>
-
-      <div class="spacer"></div>
-
-      <LeaveButton onClick={toggleLeaveConfirmation} />
-      
-      <LeaveConfirmationDialog 
-        isVisible={showLeaveConfirmation} 
-        onClose={toggleLeaveConfirmation} 
-        onLeave={handleLeave} 
-      />
-
-      <p>Démo popups</p>
-
-      <div class="spacer"></div>
-
-      <div class="game-session-container">
-        <GameSessionCard 
-          player1Name="JACOB"
-          player1Image="/images/cop.png"
-          isFull={false}
-          onJoin={handleJoinGame}
-        />
+      <div class="grid-info-panel">
         
-        <GameSessionCard 
-          player1Name="JACOB"
-          player1Image="/images/cop.png"
-          player2Name="JOJO"
-          player2Image="/images/andre.png"
-          isFull={true}
-          onSpectate={handleSpectateGame}
-        />
       </div>
-
-      <p>Démo preview de partie ouverte ou en cours</p>
-
-      <div class="spacer"></div>
-      
-      <div class="chat-container">
-        <GameChatWindow 
-          messages={chatMessages}
-          currentUsername="JACOB"
-        />
-      </div>
-      
-      <p>Démo du chat</p>
-
-    </main>
+    </div>
   </div>
 </BackgroundLayout>
 
 <style>
-  .app-container {
-    position: relative;
+  .home-container {
     width: 100%;
-    min-height: 100vh;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
   }
-
-  .navbar-spacer {
-    height: 120px; /* Provides space for the fixed navbar */
+  
+  .content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    gap: 48px;
   }
-
-  main {
+  
+  .game-sessions-container {
+    max-width: 956px;
+  }
+  
+  .game-sessions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 124px;
+    justify-content: flex-start;
+    align-content: flex-start;
+  }
+  
+  .divider {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    align-self: center;
+  }
+  
+  .divider span {
+    color: white;
+    font-size: 32px;
+    font-family: Comic Neue, sans-serif;
+    font-weight: 700;
     text-align: center;
-    padding: 1em;
-    max-width: 800px;
-    margin: 0 auto;
-    padding-top: 20px;
-  }
-
-  h1 {
-    color: #ff3e00;
-    font-size: 2em;
-    font-weight: 100;
-    margin-bottom: 1em;
-  }
-
-  .card-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 2em 0;
   }
   
-  .spacer {
-    height: 40px;
+  .grid-info-panel {
+    width: 526px;
+    height: 818px;
+    background: linear-gradient(0deg, white 0%, white 100%), 
+                linear-gradient(133deg, rgba(255, 255, 157.79, 0.52) 0%, rgba(249.31, 142.29, 240.39, 0.19) 100%);
+    box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    backdrop-filter: blur(5px);
   }
-  
-  .button-container {
-    margin-top: 2em;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .grid-preview-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 2em 0;
-  }
-  
-  .grid-add-container {
-    display: flex;
-    justify-content: center;
-    margin: 1em 0;
-  }
-  
-  .game-session-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin: 2em 0;
-  }
-  
-  .chat-container {
-    display: flex;
-    justify-content: center;
-    margin: 2em 0;
-  }
-  </style>
+</style>
