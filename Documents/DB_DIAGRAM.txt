@@ -38,17 +38,15 @@ Table grids {
   grid_id bigint [primary key]
   name varchar
   category Category [ref: < categories.category_id]
-  image_url varchar
-  rows integer
-  columns integer
-  characters vector(Character) [note:"Character, classe non stockée en bdd"]
-  x integer [note: "top-left x"]
-  y integer [note: "top-left y"]
-  height integer [note: "taille du rectangle"]
-  width integer [note: "taille du rectangle"]
-  gap_x integer [note: "gap x entre 2 rectangle de character"]
-  gap_y integer [note: "gap y entre 2 rectangle de character"]
   creator Account [ref : < accounts.account_id]
+}
+
+Table characters {
+  character_id bigint [primary key]
+  name varchar [not null]
+  image_url varchar [not null]
+  grid_id Grid [ref: < grids.grid_id]
+  creator Account [ref: < accounts.account_id]
 }
 
 table categories {
