@@ -53,7 +53,13 @@
   </div>
   <div class="frame-21">
     <div class="grid-name"><span class="gridname_span">{gridName}</span></div>
-    <div class="par-jackie36"><span class="parjackie36_span">par {author}</span></div>
+    <div class="par-jackie36">
+      {#if author === "OFFICIELLE"}
+        <span class="official-tag">{author}</span>
+      {:else}
+        <span class="parjackie36_span">par {author}</span>
+      {/if}
+    </div>
   </div>
 </div>
 
@@ -73,6 +79,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .official-tag {
+    font-family: "Roboto Mono";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    background: linear-gradient(86deg, rgba(144, 0, 255, 0.77) -2.12%, rgba(255, 204, 0, 0.77) 49.04%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .parjackie36_span {
