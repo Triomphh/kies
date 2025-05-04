@@ -2,6 +2,8 @@
   import BackgroundLayout from '$lib/components/BackgroundLayout.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import GameSessionCard from '$lib/components/GameSessionCard.svelte';
+  import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
+  import GridButton from '$lib/components/GridButton.svelte';
   
   const emptyGameSessions = [
     { player1Name: "JACOB", player1Image: "/images/cop.png" },
@@ -44,6 +46,17 @@
   const handleAvatarClick = () => {
     console.log("Avatar clicked");
   };
+  
+  const customButtons = [
+    {
+      component: LeaderboardButton,
+      props: { onClick: handleLeaderboardClick }
+    },
+    {
+      component: GridButton,
+      props: { onClick: handleGridClick }
+    }
+  ];
 </script>
 
 <BackgroundLayout>
@@ -51,9 +64,8 @@
     <Navbar 
       avatarUrl="https://placehold.co/88x88" 
       avatarAlt="User avatar" 
-      onLeaderboardClick={handleLeaderboardClick} 
-      onGridClick={handleGridClick} 
-      onAvatarClick={handleAvatarClick} 
+      onAvatarClick={handleAvatarClick}
+      customButtons={customButtons}
     />
     
     <div class="content-container">
