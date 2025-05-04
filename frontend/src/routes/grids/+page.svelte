@@ -122,7 +122,7 @@
   }
 
   function handleAddGridClick() {
-    console.log('Open add grid dialog');
+    goto('/grids/add');
   }
 
   function handleGridClick(gridId: number) {
