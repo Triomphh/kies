@@ -98,7 +98,7 @@
 
 <style>
   .game-chat-window {
-    width: 700px;
+    width: 100%;
     height: 710px;
     position: relative;
     background: rgba(0, 0, 0, 0.16);
