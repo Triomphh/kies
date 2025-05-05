@@ -16,6 +16,9 @@ public class Grid {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "is_official")
+    private boolean isOfficial = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
@@ -44,13 +47,26 @@ public class Grid {
     /**
      * Crée une nouvelle grille avec les informations complètes.
      *
-     * @param name     Le nom de la grille
-     * @param category La catégorie de la grille
-     * @param creator  Le compte qui a créé cette grille
+     * @param name       Le nom de la grille
+     * @param category   La catégorie de la grille
+     * @param creator    Le compte qui a créé cette grille
+     * @param isOfficial Indique si la grille est officielle
      */
-    public Grid(String name, Category category, Account creator) {
+    public Grid(String name, Category category, Account creator, boolean isOfficial) {
         this(name, category);
         this.creator = creator;
+        this.isOfficial = isOfficial;
+    }
+
+    /**
+     * Crée une nouvelle grille avec les informations complètes (non-officielle par défaut).
+     *
+     * @param name       Le nom de la grille
+     * @param category   La catégorie de la grille
+     * @param creator    Le compte qui a créé cette grille
+     */
+    public Grid(String name, Category category, Account creator) {
+        this(name, category, creator, false);
     }
 
     public void addCharacter(Character character) {
@@ -83,6 +99,14 @@ public class Grid {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isOfficial() {
+        return isOfficial;
+    }
+
+    public void setOfficial(boolean isOfficial) {
+        this.isOfficial = isOfficial;
     }
 
     public Category getCategory() {

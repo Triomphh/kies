@@ -8,6 +8,7 @@
     { name: "ANDRÉ", imageUrl: "/images/andre.png" },
     { name: "PABLO", imageUrl: "/images/cop.png" }
   ];
+  export let isOfficial = false;
   
   let isHovered = false;
   
@@ -54,8 +55,8 @@
   <div class="frame-21">
     <div class="grid-name"><span class="gridname_span">{gridName}</span></div>
     <div class="par-jackie36">
-      {#if author === "OFFICIELLE"}
-        <span class="official-tag">{author}</span>
+      {#if isOfficial}
+        <span class="official-tag">OFFICIELLE</span>
       {:else}
         <span class="parjackie36_span">par {author}</span>
       {/if}

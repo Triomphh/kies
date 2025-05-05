@@ -161,7 +161,8 @@
         <div on:click={() => handleGridClick(grid.id)} on:keydown={(e) => e.key === 'Enter' && handleGridClick(grid.id)} role="button" tabindex="0">
           <GridPreviewButton 
             gridName={grid.name}
-            author={grid.isOfficial ? "OFFICIELLE" : grid.author}
+            author={grid.author}
+            isOfficial={grid.isOfficial}
             characters={grid.characters}
           />
         </div>
