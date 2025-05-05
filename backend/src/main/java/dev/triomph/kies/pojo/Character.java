@@ -1,9 +1,14 @@
 package dev.triomph.kies.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "characters")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "characterId")
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +23,7 @@ public class Character {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grid_id")
+    @JsonBackReference
     private Grid grid;
 
     @ManyToOne(fetch = FetchType.LAZY)

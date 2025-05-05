@@ -3,10 +3,15 @@ package dev.triomph.kies.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "grids")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gridId")
 public class Grid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +22,14 @@ public class Grid {
     private String name;
 
     @Column(name = "is_official")
-    private boolean isOfficial = false;
+    private Boolean isOfficial = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "grid", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Character> characters = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -102,10 +108,10 @@ public class Grid {
     }
 
     public boolean isOfficial() {
-        return isOfficial;
+        return isOfficial != null ? isOfficial : false;
     }
 
-    public void setOfficial(boolean isOfficial) {
+    public void setOfficial(Boolean isOfficial) {
         this.isOfficial = isOfficial;
     }
 

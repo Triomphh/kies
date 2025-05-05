@@ -3,10 +3,14 @@ package dev.triomph.kies.pojo;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "accounts")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "accountId")
 public class Account {
 
     @Id
@@ -75,13 +79,23 @@ public class Account {
 
     // Getters et Setters
 
-    public Long getId() {
+    public Long getAccountId() {
         return accountId;
     }
-    public void setId(Long accountId) {
+    
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
+    public Long getId() {
+        return getAccountId();
+    }
+    
+    public void setId(Long accountId) {
+        setAccountId(accountId);
+    }
+
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

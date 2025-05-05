@@ -3,11 +3,13 @@ package dev.triomph.kies.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import dev.triomph.kies.dto.GridDTO;
 import dev.triomph.kies.pojo.Account;
 import dev.triomph.kies.pojo.Category;
 import dev.triomph.kies.pojo.Grid;
@@ -30,15 +32,33 @@ public class GridController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Grid>> getAllGrids() {
-        return ResponseEntity.ok(gridService.getAllGrids());
+    public ResponseEntity<?> getAllGrids() {
+        try {
+            List<Grid> grids = gridService.getAllGrids();
+            List<GridDTO> gridDTOs = grids.stream()
+                .map(GridDTO::new)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(gridDTOs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Failed to fetch grids", "message", e.getMessage()));
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Grid> getGridById(@PathVariable Long id) {
-        return gridService.getGridById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getGridById(@PathVariable Long id) {
+        try {
+            return gridService.getGridById(id)
+                    .map(grid -> ResponseEntity.ok(new GridDTO(grid)))
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Failed to fetch grid", "message", e.getMessage()));
+        }
     }
 
     @PostMapping

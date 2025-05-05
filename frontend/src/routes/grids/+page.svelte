@@ -6,108 +6,24 @@
   import BackButton from "$lib/components/BackButton.svelte";
   import LeaderboardButton from "$lib/components/LeaderboardButton.svelte";
   import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
+  import { gridService, type Grid } from "$lib/services/api";
   
-  const grids = [
-    {
-      id: 1,
-      name: "GRID NAME",
-      author: "OFFICIELLE",
-      isOfficial: true,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 2,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 3,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 4,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 5,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 6,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 7,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 8,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
-    },
-    {
-      id: 9,
-      name: "GRID NAME",
-      author: "Jackie36",
-      isOfficial: false,
-      characters: [
-        { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-        { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-        { name: "PABLO", imageUrl: "/images/cop.png" }
-      ]
+  let grids: Grid[] = [];
+  let loading = true;
+  let error = false;
+  
+  onMount(async () => {
+    try {
+      loading = true;
+      grids = await gridService.getAllGrids();
+    } catch (err) {
+      console.error("Error fetching grids:", err);
+      error = true;
+    } finally {
+      loading = false;
     }
-  ];
+  });
 
   function handleLeaderboardClick() {
     console.log('Navigate to leaderboard');
@@ -157,16 +73,27 @@
         <GridAddButton />
       </div>
       
-      {#each grids as grid (grid.id)}
-        <div on:click={() => handleGridClick(grid.id)} on:keydown={(e) => e.key === 'Enter' && handleGridClick(grid.id)} role="button" tabindex="0">
-          <GridPreviewButton 
-            gridName={grid.name}
-            author={grid.author}
-            isOfficial={grid.isOfficial}
-            characters={grid.characters}
-          />
+      {#if loading}
+        <div class="loading">Loading grids...</div>
+      {:else if error}
+        <div class="error">
+          <p>Failed to load grids from the server.</p>
+          <button on:click={() => window.location.reload()}>Try again</button>
         </div>
-      {/each}
+      {:else if grids.length === 0}
+        <div class="no-grids">No grids found. Create the first one!</div>
+      {:else}
+        {#each grids as grid (grid.gridId)}
+          <div on:click={() => handleGridClick(grid.gridId)} on:keydown={(e) => e.key === 'Enter' && handleGridClick(grid.gridId)} role="button" tabindex="0">
+            <GridPreviewButton 
+              gridName={grid.name}
+              author={grid.creator || 'Unknown'}
+              isOfficial={grid.isOfficial}
+              characters={grid.characters}
+            />
+          </div>
+        {/each}
+      {/if}
     </div>
   </div>
 </BackgroundLayout>
@@ -191,6 +118,28 @@
   }
 
   .grids-container > div {
+    cursor: pointer;
+  }
+  
+  .loading, .error, .no-grids {
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+  }
+  
+  .error {
+    color: #ff3e00;
+  }
+  
+  .error button {
+    background: #ff3e00;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
     cursor: pointer;
   }
 </style>
