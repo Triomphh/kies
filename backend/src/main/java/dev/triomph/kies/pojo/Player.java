@@ -57,6 +57,21 @@ public class Player {
         this.nickname = nickname;
     }
 
+    /**
+     * Obtient l'URL de l'image de profil.
+     * Si le joueur a un compte, retourne l'image de profil du compte.
+     * Sinon, retourne une image par défaut.
+     * 
+     * @return URL de l'image de profil
+     */
+    public String getProfileImageUrl() {
+        // Les images de profil sont seulement disponibles pour les joueurs avec un compte
+        if (account != null) {
+            return account.getProfileImageUrl();
+        }
+        return "https://placehold.co/88x88"; // Image par défaut pour les joueurs sans compte
+    }
+
     public int getGamesPlayed() {
         return gamesPlayed;
     }

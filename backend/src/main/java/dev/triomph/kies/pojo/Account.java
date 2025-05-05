@@ -23,6 +23,9 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     @Column(nullable = false)
     private LocalDateTime dateRegistered;
 
@@ -36,6 +39,7 @@ public class Account {
     // Constructeur par défaut
     public Account() {
         this.dateRegistered = LocalDateTime.now();
+        this.profileImageUrl = "https://placehold.co/88x88"; // Image par défaut
     }
 
     /**
@@ -52,6 +56,20 @@ public class Account {
         this.password = password;
         this.age = age;
         this.gender = gender;
+    }
+
+    /**
+     * Crée un nouveau compte avec une image de profil personnalisée.
+     *
+     * @param player         Le Player auquel appartient ce compte.
+     * @param password       mot de passe de l'utilisateur.
+     * @param age            âge de l'utilisateur.
+     * @param gender         genre de l'utilisateur.
+     * @param profileImageUrl URL de l'image de profil.
+     */
+    public Account(Player player, String password, int age, Gender gender, String profileImageUrl) {
+        this(player, password, age, gender);
+        this.profileImageUrl = profileImageUrl;
     }
 
 
@@ -83,6 +101,13 @@ public class Account {
     }
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public LocalDateTime getDateRegistered() {
