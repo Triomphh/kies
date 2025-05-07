@@ -17,8 +17,10 @@ public class WebConfig {
                         .allowedOrigins(
                             "http://localhost:5173", // SvelteKit
                             "http://localhost:3000",
-                            "http://frontend:3000"
+                            "http://frontend:3000",
+                            "http://localhost"
                         )
+                        .allowedOriginPatterns("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

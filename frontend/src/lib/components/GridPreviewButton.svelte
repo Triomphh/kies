@@ -1,16 +1,37 @@
 <script lang="ts">
   import SmallCharacterCard from './SmallCharacterCard.svelte';
   
-  export let gridName = "GRID NAME";
-  export let author = "Jackie36";
-  export let characters = [
-    { name: "MACRON", imageUrl: "/images/macron.jpeg" },
-    { name: "ANDRÉ", imageUrl: "/images/andre.png" },
-    { name: "PABLO", imageUrl: "/images/cop.png" }
-  ];
+  type Character = {
+    name: string;
+    imageUrl: string;
+  };
+  
+  export let gridName = "?";
+  export let author = "?";
+  export let characters: Character[] = [];
   export let isOfficial = false;
   
   let isHovered = false;
+  
+  // Afficher 3 personnages
+  $: displayCharacters = ensureThreeCharacters(characters);
+  
+  function ensureThreeCharacters(chars: Character[]): Character[] {
+    const placeholderChar = { name: "?", imageUrl: "/images/placeholder.png" };
+    
+    if (!Array.isArray(chars) || chars.length === 0) {
+      return [placeholderChar, placeholderChar, placeholderChar];
+    }
+    
+    const result = [...chars];
+    
+    while (result.length < 3) {
+      result.push(placeholderChar);
+    }
+    
+    // Retourne les 3 premiers perso de la grille
+    return result.slice(0, 3);
+  }
   
   function handleClick() {
     console.log(`Grid ${gridName} clicked`);
@@ -43,13 +64,13 @@
 >
   <div class="cards_autolayout">
     <div class="card_left">
-      <SmallCharacterCard characterName={characters[0].name} imageUrl={characters[0].imageUrl} />
+      <SmallCharacterCard characterName={displayCharacters[0].name} imageUrl={displayCharacters[0].imageUrl} />
     </div>
     <div class="card_center">
-      <SmallCharacterCard characterName={characters[1].name} imageUrl={characters[1].imageUrl} />
+      <SmallCharacterCard characterName={displayCharacters[1].name} imageUrl={displayCharacters[1].imageUrl} />
     </div>
     <div class="card_right">
-      <SmallCharacterCard characterName={characters[2].name} imageUrl={characters[2].imageUrl} />
+      <SmallCharacterCard characterName={displayCharacters[2].name} imageUrl={displayCharacters[2].imageUrl} />
     </div>
   </div>
   <div class="frame-21">
