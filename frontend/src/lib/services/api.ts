@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '$lib/config';
+import { authService } from './authService';
 
 // Types
 export interface Character {
@@ -24,7 +25,9 @@ interface ApiError {
 export const gridService = {
   async getAllGrids(): Promise<Grid[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/grids`);
+      const response = await fetch(`${API_BASE_URL}/grids`, {
+        headers: authService.getAuthHeader()
+      });
       
       if (!response.ok) {
         let errorData: ApiError;
@@ -46,7 +49,9 @@ export const gridService = {
   
   async getGridById(id: number): Promise<Grid> {
     try {
-      const response = await fetch(`${API_BASE_URL}/grids/${id}`);
+      const response = await fetch(`${API_BASE_URL}/grids/${id}`, {
+        headers: authService.getAuthHeader()
+      });
       
       if (!response.ok) {
         let errorData: ApiError;

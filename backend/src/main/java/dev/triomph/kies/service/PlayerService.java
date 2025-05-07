@@ -27,26 +27,43 @@ public class PlayerService {
         return playerDAO.findById(id);
     }
 
+    /**
+     * Obtient le premier joueur avec le pseudo donné
+     * @deprecated Attention en utilisant la méthode...
+     */
     public Optional<Player> getPlayerByNickname(String nickname) {
         return playerDAO.findByNickname(nickname);
     }
+    
+    public List<Player> getAllPlayersByNickname(String nickname) {
+        return playerDAO.findAllByNickname(nickname);
+    }
 
     public Player createPlayer(String nickname) {
-        // check si le player existe déjà
-        Optional<Player> existingPlayer = playerDAO.findByNickname(nickname);
-        if (existingPlayer.isPresent()) {
-            return null;
-        }
-        
         Player player = new Player(nickname);
         return playerDAO.save(player);
     }
 
     public Player updatePlayer(Player player) {
+        if (!playerDAO.existsById(player.getPlayerId())) {
+            throw new IllegalArgumentException("Player not found with id: " + player.getPlayerId());
+        }
+        return playerDAO.save(player);
+    }
+    
+    @Transactional
+    public Player updateNickname(Long playerId, String newNickname) {
+        Player player = playerDAO.findById(playerId)
+            .orElseThrow(() -> new IllegalArgumentException("Player not found with id: " + playerId));
+        
+        player.setNickname(newNickname);
         return playerDAO.save(player);
     }
 
     public void deletePlayer(Long id) {
+        if (!playerDAO.existsById(id)) {
+            throw new IllegalArgumentException("Player not found with id: " + id);
+        }
         playerDAO.deleteById(id);
     }
 

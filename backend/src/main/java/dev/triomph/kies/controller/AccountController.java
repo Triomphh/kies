@@ -50,6 +50,7 @@ public class AccountController {
     public ResponseEntity<Account> createAccount(@RequestBody Map<String, Object> payload) {
         try {
             String nickname = (String) payload.get("nickname");
+            String email = (String) payload.get("email");
             String password = (String) payload.get("password");
             int age = (int) payload.get("age");
             Gender gender = Gender.valueOf((String) payload.get("gender"));
@@ -65,7 +66,7 @@ public class AccountController {
             }
 
             // Crée le compte
-            Account account = accountService.createAccount(player, password, age, gender);
+            Account account = accountService.createAccount(player, email, password, age, gender);
             
             if (account == null) {
                 // Le joueur a déjà un compte

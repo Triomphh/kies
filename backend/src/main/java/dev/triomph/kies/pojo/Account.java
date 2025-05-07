@@ -18,6 +18,9 @@ public class Account {
     @Column(name = "account_id")
     private Long accountId;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String password;
 
@@ -32,6 +35,9 @@ public class Account {
 
     @Column(nullable = false)
     private LocalDateTime dateRegistered;
+
+    @Column(nullable = false)
+    private String role = "ROLE_USER"; // Default role
 
     // Relation 1:1 obligatoire avec Player
     @OneToOne(fetch = FetchType.LAZY, optional = false) // Un compte doit obligatoirement appartenir à un joueur
@@ -50,13 +56,15 @@ public class Account {
      * Crée un nouveau compte à un Player.
      *
      * @param player    Le Player auquel appartient ce compte.
+     * @param email     Email de l'utilisateur.
      * @param password  mot de passe de l'utilisateur.
      * @param age       âge de l'utilisateur.
      * @param gender    genre de l'utilisateur.
      */
-    public Account(Player player, String password, int age, Gender gender) {
+    public Account(Player player, String email, String password, int age, Gender gender) {
         this();
         this.player = player;
+        this.email = email;
         this.password = password;
         this.age = age;
         this.gender = gender;
@@ -66,13 +74,14 @@ public class Account {
      * Crée un nouveau compte avec une image de profil personnalisée.
      *
      * @param player         Le Player auquel appartient ce compte.
+     * @param email          Email de l'utilisateur.
      * @param password       mot de passe de l'utilisateur.
      * @param age            âge de l'utilisateur.
      * @param gender         genre de l'utilisateur.
      * @param profileImageUrl URL de l'image de profil.
      */
-    public Account(Player player, String password, int age, Gender gender, String profileImageUrl) {
-        this(player, password, age, gender);
+    public Account(Player player, String email, String password, int age, Gender gender, String profileImageUrl) {
+        this(player, email, password, age, gender);
         this.profileImageUrl = profileImageUrl;
     }
 
@@ -93,6 +102,14 @@ public class Account {
     
     public void setId(Long accountId) {
         setAccountId(accountId);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @JsonIgnore
@@ -129,6 +146,14 @@ public class Account {
     }
     public void setDateRegistered(LocalDateTime dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public String getRole() {
+        return role;
+    }
+    
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Player getPlayer() {

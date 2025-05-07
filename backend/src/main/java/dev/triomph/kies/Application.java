@@ -36,7 +36,7 @@ public class Application {
 		
 		if (existingPlayer.isEmpty()) {
 			Player player = playerService.createPlayer("Jojo");
-			Account account = accountService.createAccount(player, "mdp", 18, Gender.MALE);
+			Account account = accountService.createAccount(player, "jojo@example.com", "mdp", 18, Gender.MALE);
 		} else {
 			System.out.println("Existe déjà");
 		}

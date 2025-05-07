@@ -13,18 +13,20 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
+                registry.addMapping("/**")
                         .allowedOrigins(
                             "http://localhost:5173", // SvelteKit
                             "http://localhost:3000",
                             "http://frontend:3000",
-                            "http://localhost"
+                            "http://localhost",
+                            "http://frontend"
                         )
-                        .allowedOriginPatterns("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .exposedHeaders("Authorization")
+                        .allowCredentials(true)
+                        .maxAge(3600);
             }
         };
     }
-} 
+}

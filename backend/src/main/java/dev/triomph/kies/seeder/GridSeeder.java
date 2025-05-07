@@ -13,6 +13,7 @@ import dev.triomph.kies.pojo.Category;
 import dev.triomph.kies.pojo.Grid;
 import dev.triomph.kies.pojo.Account;
 import dev.triomph.kies.pojo.Player;
+import dev.triomph.kies.pojo.Gender;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class GridSeeder implements CommandLineRunner {
             .orElseGet(() -> playerService.createPlayer("admin"));
             
         Account adminAccount = accountService.findAccountByPlayerId(adminPlayer.getPlayerId())
-            .orElseGet(() -> accountService.createAccount(adminPlayer, "admin", 0, null));
+            .orElseGet(() -> accountService.createAccount(adminPlayer, "admin@example.com", "admin", 0, Gender.OTHER));
 
         // Catégorie
         Category category = categoryService.getCategoryByName("Personnages")

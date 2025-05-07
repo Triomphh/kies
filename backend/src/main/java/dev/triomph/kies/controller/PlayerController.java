@@ -2,11 +2,14 @@ package dev.triomph.kies.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import dev.triomph.kies.dto.PlayerDTO;
+import dev.triomph.kies.dto.PlayerNicknameUpdateRequest;
 import dev.triomph.kies.pojo.Player;
 import dev.triomph.kies.service.PlayerService;
 
@@ -22,26 +25,51 @@ public class PlayerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Player>> getAllPlayers() {
-        return ResponseEntity.ok(playerService.getAllPlayers());
+    public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
+        List<PlayerDTO> players = playerService.getAllPlayers()
+                .stream()
+                .map(PlayerDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(players);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Player> getPlayerById(@PathVariable Long id) {
+    public ResponseEntity<PlayerDTO> getPlayerById(@PathVariable Long id) {
         return playerService.getPlayerById(id)
-                .map(ResponseEntity::ok)
+                .map(player -> ResponseEntity.ok(PlayerDTO.fromEntity(player)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Trouve un joueur par son pseudo. Renvoie le premier joueur trouvé avec ce pseudo.
+     * @deprecated Attention en utilisant ce endpoint...
+     */
     @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<Player> getPlayerByNickname(@PathVariable String nickname) {
+    public ResponseEntity<PlayerDTO> getPlayerByNickname(@PathVariable String nickname) {
         return playerService.getPlayerByNickname(nickname)
-                .map(ResponseEntity::ok)
+                .map(player -> ResponseEntity.ok(PlayerDTO.fromEntity(player)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+    
+    /**
+     * Trouve tous les joueurs avec un pseudo donné. (préféré)
+     */
+    @GetMapping("/nicknames/{nickname}")
+    public ResponseEntity<List<PlayerDTO>> getAllPlayersByNickname(@PathVariable String nickname) {
+        List<PlayerDTO> players = playerService.getAllPlayersByNickname(nickname)
+                .stream()
+                .map(PlayerDTO::fromEntity)
+                .collect(Collectors.toList());
+                
+        if (players.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(players);
     }
 
     @PostMapping
-    public ResponseEntity<Player> createPlayer(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<PlayerDTO> createPlayer(@RequestBody Map<String, String> payload) {
         String nickname = payload.get("nickname");
         
         if (nickname == null || nickname.trim().isEmpty()) {
@@ -49,50 +77,62 @@ public class PlayerController {
         }
         
         Player player = playerService.createPlayer(nickname);
-        if (player == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body(player);
+        return ResponseEntity.status(HttpStatus.CREATED).body(PlayerDTO.fromEntity(player));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Player> updatePlayer(@PathVariable Long id, @RequestBody Player player) {
-        if (!playerService.getPlayerById(id).isPresent()) {
+    public ResponseEntity<PlayerDTO> updatePlayer(@PathVariable Long id, @RequestBody Player player) {
+        try {
+            player.setPlayerId(id);
+            Player updatedPlayer = playerService.updatePlayer(player);
+            return ResponseEntity.ok(PlayerDTO.fromEntity(updatedPlayer));
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
-        
-        player.setPlayerId(id);
-        return ResponseEntity.ok(playerService.updatePlayer(player));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlayer(@PathVariable Long id) {
-        if (!playerService.getPlayerById(id).isPresent()) {
+        try {
+            playerService.deletePlayer(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
-        
-        playerService.deletePlayer(id);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/increment-games")
-    public ResponseEntity<Player> incrementGamesPlayed(@PathVariable Long id) {
+    public ResponseEntity<PlayerDTO> incrementGamesPlayed(@PathVariable Long id) {
         try {
             Player updatedPlayer = playerService.incrementGamesPlayed(id);
-            return ResponseEntity.ok(updatedPlayer);
+            return ResponseEntity.ok(PlayerDTO.fromEntity(updatedPlayer));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping("/{id}/increment-victories")
-    public ResponseEntity<Player> incrementVictories(@PathVariable Long id) {
+    public ResponseEntity<PlayerDTO> incrementVictories(@PathVariable Long id) {
         try {
             Player updatedPlayer = playerService.incrementVictories(id);
-            return ResponseEntity.ok(updatedPlayer);
+            return ResponseEntity.ok(PlayerDTO.fromEntity(updatedPlayer));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PatchMapping("/{id}/nickname")
+    public ResponseEntity<PlayerDTO> updateNickname(
+            @PathVariable Long id, 
+            @RequestBody PlayerNicknameUpdateRequest request) {
+        
+        try {
+            Player updatedPlayer = playerService.updateNickname(id, request.getNickname());
+            return ResponseEntity.ok(PlayerDTO.fromEntity(updatedPlayer));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

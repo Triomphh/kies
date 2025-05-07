@@ -28,23 +28,23 @@ public class AccountService {
         return accountDAO.findById(id);
     }
 
-    public Account createAccount(Player player, String password, int age, Gender gender) {
+    public Account createAccount(Player player, String email, String password, int age, Gender gender) {
         // Check si le player a déjà un account
         if (player.getAccount() != null || findAccountByPlayerId(player.getPlayerId()).isPresent()) {
             return null;
         }
         
-        Account account = new Account(player, password, age, gender);
+        Account account = new Account(player, email, password, age, gender);
         return accountDAO.save(account);
     }
     
-    public Account createAccount(Player player, String password, int age, Gender gender, String profileImageUrl) {
+    public Account createAccount(Player player, String email, String password, int age, Gender gender, String profileImageUrl) {
         // Check si le player a déjà un account
         if (player.getAccount() != null || findAccountByPlayerId(player.getPlayerId()).isPresent()) {
             return null;
         }
         
-        Account account = new Account(player, password, age, gender, profileImageUrl);
+        Account account = new Account(player, email, password, age, gender, profileImageUrl);
         return accountDAO.save(account);
     }
 
@@ -58,5 +58,9 @@ public class AccountService {
 
     public Optional<Account> findAccountByPlayerId(Long playerId) {
         return accountDAO.findByPlayerPlayerId(playerId);
+    }
+    
+    public Optional<Account> findAccountByEmail(String email) {
+        return accountDAO.findByEmail(email);
     }
 }

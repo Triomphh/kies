@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
   export let imageUrl = "https://placehold.co/88x88";
   export let altText = "User avatar";
-  export let onClick = () => {};
+  export let onClick: (() => void) | null = null;
 </script>
 
-<button class="avatar-button" on:click={onClick}>
+<button class="avatar-button" on:click={onClick ? onClick : () => {}}>
   <img class="avatar-image" src={imageUrl} alt={altText} />
 </button>
 

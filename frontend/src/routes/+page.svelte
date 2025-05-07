@@ -5,6 +5,8 @@
   import LeaderboardButton from '$lib/components/LeaderboardButton.svelte';
   import GridButton from '$lib/components/GridButton.svelte';
   import { goto } from '$app/navigation';
+  import { authService } from '$lib/services/authService';
+  import { onMount } from 'svelte';
   
   const emptyGameSessions = [
     { player1Name: "JACOB", player1Image: "/images/cop.png" },
@@ -44,10 +46,6 @@
     goto('/grids');
   };
   
-  const handleAvatarClick = () => {
-    console.log("Avatar clicked");
-  };
-  
   const customButtons = [
     {
       component: LeaderboardButton,
@@ -65,7 +63,6 @@
     <Navbar 
       avatarUrl="https://placehold.co/88x88" 
       avatarAlt="User avatar" 
-      onAvatarClick={handleAvatarClick}
       customButtons={customButtons}
     />
     
