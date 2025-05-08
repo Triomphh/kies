@@ -75,6 +75,7 @@ public class WebSecurityConfig {
                     .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/grids/**").permitAll()
                     .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/categories/**").permitAll()
                     .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/characters/**").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/files/**").permitAll()
                     .requestMatchers("/api/test/public").permitAll()
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/error/**").permitAll()

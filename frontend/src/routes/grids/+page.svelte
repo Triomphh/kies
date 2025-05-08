@@ -5,6 +5,7 @@
   import GridAddButton from "$lib/components/GridAddButton.svelte";
   import BackButton from "$lib/components/BackButton.svelte";
   import LeaderboardButton from "$lib/components/LeaderboardButton.svelte";
+  import GridPopup from "$lib/components/GridPopup.svelte";
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { gridService, type Grid } from "$lib/services/api";
@@ -12,6 +13,8 @@
   let grids: Grid[] = [];
   let loading = true;
   let error = false;
+  let selectedGridId: number | null = null;
+  let showGridPopup = false;
   
   onMount(async () => {
     try {
@@ -43,6 +46,12 @@
 
   function handleGridClick(gridId: number) {
     console.log(`Grid ${gridId} clicked`);
+    selectedGridId = gridId;
+    showGridPopup = true;
+  }
+  
+  function handlePopupClose() {
+    showGridPopup = false;
   }
 
   const customNavButtons = [
@@ -65,7 +74,6 @@
       customButtons={customNavButtons}
       avatarUrl="https://placehold.co/88x88"
       avatarAlt="User avatar"
-      onAvatarClick={handleAvatarClick}
     />
     
     <div class="grids-container">
@@ -96,6 +104,14 @@
       {/if}
     </div>
   </div>
+
+  {#if selectedGridId !== null}
+    <GridPopup 
+      gridId={selectedGridId} 
+      visible={showGridPopup} 
+      on:close={handlePopupClose} 
+    />
+  {/if}
 </BackgroundLayout>
 
 <style>

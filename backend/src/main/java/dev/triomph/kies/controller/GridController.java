@@ -64,24 +64,92 @@ public class GridController {
     @PostMapping
     public ResponseEntity<Grid> createGrid(@RequestBody Map<String, Object> payload) {
         try {
-            String name = (String) payload.get("name");
-            Long categoryId = Long.parseLong(payload.get("categoryId").toString());
-            Long creatorId = Long.parseLong(payload.get("creatorId").toString());
-
-            Optional<Category> categoryOpt = categoryService.getCategoryById(categoryId);
-            Optional<Account> creatorOpt = accountService.getAccountById(creatorId);
+            System.out.println("Received grid creation request: " + payload);
             
-            if (categoryOpt.isPresent() && creatorOpt.isPresent()) {
-                Grid grid = gridService.createGrid(
-                    name,
-                    categoryOpt.get(),
-                    creatorOpt.get()
-                );
-                return ResponseEntity.status(HttpStatus.CREATED).body(grid);
-            } else {
+            if (!payload.containsKey("name")) {
+                System.out.println("Error: Missing 'name' field in payload");
                 return ResponseEntity.badRequest().build();
             }
+            
+            if (!payload.containsKey("categoryId")) {
+                System.out.println("Error: Missing 'categoryId' field in payload");
+                return ResponseEntity.badRequest().build();
+            }
+            
+            if (!payload.containsKey("creatorId")) {
+                System.out.println("Error: Missing 'creatorId' field in payload");
+                return ResponseEntity.badRequest().build();
+            }
+            
+            String name = (String) payload.get("name");
+            
+            Object categoryIdObj = payload.get("categoryId");
+            Long categoryId;
+            try {
+                if (categoryIdObj instanceof Integer) {
+                    categoryId = ((Integer) categoryIdObj).longValue();
+                } else if (categoryIdObj instanceof Long) {
+                    categoryId = (Long) categoryIdObj;
+                } else if (categoryIdObj instanceof String) {
+                    categoryId = Long.parseLong((String) categoryIdObj);
+                } else if (categoryIdObj instanceof Number) {
+                    categoryId = ((Number) categoryIdObj).longValue();
+                } else {
+                    System.out.println("Error: Invalid categoryId type: " + categoryIdObj.getClass().getName());
+                    return ResponseEntity.badRequest().build();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Failed to parse categoryId: " + categoryIdObj);
+                return ResponseEntity.badRequest().build();
+            }
+            
+            Object creatorIdObj = payload.get("creatorId");
+            Long creatorId;
+            try {
+                if (creatorIdObj instanceof Integer) {
+                    creatorId = ((Integer) creatorIdObj).longValue();
+                } else if (creatorIdObj instanceof Long) {
+                    creatorId = (Long) creatorIdObj;
+                } else if (creatorIdObj instanceof String) {
+                    creatorId = Long.parseLong((String) creatorIdObj);
+                } else if (creatorIdObj instanceof Number) {
+                    creatorId = ((Number) creatorIdObj).longValue();
+                } else {
+                    System.out.println("Error: Invalid creatorId type: " + creatorIdObj.getClass().getName());
+                    return ResponseEntity.badRequest().build();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Failed to parse creatorId: " + creatorIdObj);
+                return ResponseEntity.badRequest().build();
+            }
+
+            System.out.println("Looking up category with ID: " + categoryId);
+            Optional<Category> categoryOpt = categoryService.getCategoryById(categoryId);
+            if (categoryOpt.isEmpty()) {
+                System.out.println("Error: Category not found with ID: " + categoryId);
+                return ResponseEntity.badRequest().build();
+            }
+            
+            System.out.println("Looking up account with ID: " + creatorId);
+            Optional<Account> creatorOpt = accountService.getAccountById(creatorId);
+            if (creatorOpt.isEmpty()) {
+                System.out.println("Error: Account not found with ID: " + creatorId);
+                return ResponseEntity.badRequest().build();
+            }
+            
+            Category category = categoryOpt.get();
+            Account creator = creatorOpt.get();
+            
+            System.out.println("Creating grid with name: '" + name + "', category: '" + category.getName() + 
+                    "', creator: '" + creator.getEmail() + "'");
+            
+            Grid grid = gridService.createGrid(name, category, creator);
+            System.out.println("Successfully created grid with ID: " + grid.getGridId());
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(grid);
         } catch (Exception e) {
+            System.out.println("Unexpected error in createGrid: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
