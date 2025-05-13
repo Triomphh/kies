@@ -27,6 +27,8 @@ public class GridSeeder implements CommandLineRunner {
     private final PlayerService playerService;
 
     private static final String GRID_NAME = "TEST";
+    private static final String POLITICIENS_GRID_NAME = "Politiciens";
+    private static final String POLITICIENS_CATEGORY_NAME = "Politiciens";
 
     @Autowired
     public GridSeeder(
@@ -48,33 +50,67 @@ public class GridSeeder implements CommandLineRunner {
                 .filter(grid -> GRID_NAME.equals(grid.getName()))
                 .findFirst();
         
-        if (existingAndreGrid.isPresent()) {
-            System.out.println("La grille existe déjà.");
-            return;
-        }
-
-        // Compte admin temp
         Player adminPlayer = playerService.getPlayerByNickname("admin")
             .orElseGet(() -> playerService.createPlayer("admin"));
             
         Account adminAccount = accountService.findAccountByPlayerId(adminPlayer.getPlayerId())
             .orElseGet(() -> accountService.createAccount(adminPlayer, "admin@example.com", "admin", 0, Gender.OTHER));
 
-        // Catégorie
-        Category category = categoryService.getCategoryByName("Personnages")
-            .orElseGet(() -> categoryService.createCategory("Personnages", adminAccount));
-        
-        // Grille
-        Grid andreGrid = gridService.createGrid(GRID_NAME, category, adminAccount);
-        andreGrid.setOfficial(true);
-        andreGrid = gridService.updateGrid(andreGrid);
-        
-        // Ajout des perso
-        String imageUrl = "/images/andre.png";
-        for (int i = 1; i <= 32; i++) {
-            gridService.addCharacterToGrid(andreGrid.getGridId(), "André", imageUrl, adminAccount);
+        if (existingAndreGrid.isPresent()) {
+            System.out.println("La grille '" + GRID_NAME + "' existe déjà.");
+        } else {
+            // Catégorie
+            Category testCategory = categoryService.getCategoryByName("Personnages")
+                .orElseGet(() -> categoryService.createCategory("Personnages", adminAccount));
+            
+            // Grille TEST
+            Grid andreGrid = gridService.createGrid(GRID_NAME, testCategory, adminAccount);
+            andreGrid.setOfficial(true);
+            andreGrid = gridService.updateGrid(andreGrid);
+            
+            // Ajout des perso
+            String imageUrl = "/images/andre.png";
+            for (int i = 1; i <= 32; i++) {
+                gridService.addCharacterToGrid(andreGrid.getGridId(), "André", imageUrl, adminAccount);
+            }
+            System.out.println("Grille '" + GRID_NAME + "' créée.");
         }
-        
-        System.out.println("Grille test créée.");
+
+        // Grille "Politiciens"
+        List<Grid> currentGridsAfterTest = gridService.getAllGrids();
+        Optional<Grid> existingPoliticiensGrid = currentGridsAfterTest.stream()
+                .filter(grid -> POLITICIENS_GRID_NAME.equals(grid.getName()))
+                .findFirst();
+
+        if (existingPoliticiensGrid.isPresent()) {
+            System.out.println("La grille '" + POLITICIENS_GRID_NAME + "' existe déjà.");
+        } else {
+            // Catégorie "Politiciens"
+            Category politiciensCategory = categoryService.getCategoryByName(POLITICIENS_CATEGORY_NAME)
+                .orElseGet(() -> categoryService.createCategory(POLITICIENS_CATEGORY_NAME, adminAccount));
+            
+            // Grille "Politiciens"
+            Grid politiciensGrid = gridService.createGrid(POLITICIENS_GRID_NAME, politiciensCategory, adminAccount);
+            politiciensGrid.setOfficial(true);
+            politiciensGrid = gridService.updateGrid(politiciensGrid);
+            
+            // Ajout des perso à la grille "Politiciens"
+            String[] politiciensImageFiles = {
+                "Bayrou.png", "Bernie.png", "Biden.png", "Boris.png", "Borne.png",
+                "Darmanin.png", "Edouard.png", "Fillon.png", "Harris.png", "Hidalgo.png",
+                "Hollande.png", "Macron.jpeg", "Marine.png", "Melanchon.png", "Merkel.png",
+                "Modi.png", "Obama.jpg", "Poutine.png", "Sarkozy.png", "Scholz.png",
+                "Segolene.png", "Trudeau.png", "Trump.png", "Ursula.png", "Valls.png",
+                "Vance.png", "Veran.png", "Wauquiez.png", "XiJinping.png", "xXVanceXx.png",
+                "Zelensky.png", "Zemmour.png"
+            };
+
+            for (String fileName : politiciensImageFiles) {
+                String characterName = fileName.substring(0, fileName.lastIndexOf('.'));
+                String imageUrlPoliticiens = "/images/politiciens/" + fileName;
+                gridService.addCharacterToGrid(politiciensGrid.getGridId(), characterName, imageUrlPoliticiens, adminAccount);
+            }
+            System.out.println("Grille '" + POLITICIENS_GRID_NAME + "' créée.");
+        }
     }
 } 
