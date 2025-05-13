@@ -36,13 +36,15 @@ public class GameService {
     private final QuestionDAO questionDAO;
     private final CharacterDAO characterDAO;
     private final ObjectMapper objectMapper;
+    private final PlayerService playerService;
 
-    public GameService(GameDAO gameDAO, PlayerDAO playerDAO, QuestionDAO questionDAO, CharacterDAO characterDAO, ObjectMapper objectMapper) {
+    public GameService(GameDAO gameDAO, PlayerDAO playerDAO, QuestionDAO questionDAO, CharacterDAO characterDAO, ObjectMapper objectMapper, PlayerService playerService) {
         this.gameDAO = gameDAO;
         this.playerDAO = playerDAO;
         this.questionDAO = questionDAO;
         this.characterDAO = characterDAO;
         this.objectMapper = objectMapper;
+        this.playerService = playerService;
     }
 
     public List<Game> getAllGames() {
@@ -343,12 +345,19 @@ public class GameService {
         currentRound.setStatus(dev.triomph.kies.pojo.Status.COMPLETED);
 
         if (game.getCurrentRound() >= game.getMaxRounds()) {
+            Player winner = null;
             if (game.getCreatorRoundWins() > game.getOpponentRoundWins()) {
-                game.setWinner(game.getCreator());
+                winner = game.getCreator();
+                game.setWinner(winner);
             } else if (game.getOpponentRoundWins() > game.getCreatorRoundWins()) {
-                game.setWinner(game.getOpponent());
+                winner = game.getOpponent();
+                game.setWinner(winner);
             } else {
                 game.setWinner(null);
+            }
+
+            if (winner != null) {
+                playerService.incrementVictories(winner.getPlayerId());
             }
             game.setStatus(Game.GameStatus.FINISHED);
         } else {
