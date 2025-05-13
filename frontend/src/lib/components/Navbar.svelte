@@ -4,8 +4,8 @@
   import AvatarButton from './AvatarButton.svelte';
   import NicknameInput from './NicknameInput.svelte';
   import { goto } from '$app/navigation';
-  import { authService } from '$lib/services/authService';
-  import { onMount, onDestroy } from 'svelte';
+  import { authService, authStore } from '$lib/services/authService';
+  import { onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   
   export let avatarUrl: string = "https://placehold.co/88x88";
@@ -19,21 +19,9 @@
   
   export let customButtons: any[] = [];
   
-  let isAuthenticated = false;
   let isDropdownOpen = false;
   let dropdownRef: HTMLDivElement;
-  let nickname = '';
-  
-  onMount(() => {
-    if (browser) {
-      isAuthenticated = authService.isAuthenticated();
-      
-      const userInfo = authService.getUserInfo();
-      nickname = userInfo.username || localStorage.getItem('playerNickname') || '';
-      
-      document.addEventListener('click', handleClickOutside);
-    }
-  });
+
   
   onDestroy(() => {
     if (browser) {
@@ -47,11 +35,20 @@
     }
   }
   
-  function toggleDropdown(event: MouseEvent) {
-    event.stopPropagation();
+  function toggleDropdown(event: MouseEvent | KeyboardEvent) {
+    if (event instanceof MouseEvent) {
+      event.stopPropagation();
+    }
     isDropdownOpen = !isDropdownOpen;
   }
   
+  function handleAvatarKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleDropdown(event);
+    }
+  }
+
   function handleLoginClick() {
     isDropdownOpen = false;
     goto('/login');
@@ -66,7 +63,6 @@
     isDropdownOpen = false;
     authService.logout();
     goto('/');
-    window.location.reload();
   }
 </script>
 
@@ -88,20 +84,26 @@
   
   {#if showNicknameInput}
     <div class="nickname-container">
-      <NicknameInput bind:value={nickname} />
+      <NicknameInput bind:value={$authStore.nickname} />
     </div>
   {/if}
   
   <div class="avatar-container" bind:this={dropdownRef}>
-    <div class="avatar-wrapper" on:click={toggleDropdown}>
+    <div
+      class="avatar-wrapper"
+      role="button"
+      tabindex="0"
+      on:click={toggleDropdown}
+      on:keydown={handleAvatarKeyDown}
+    >
       <AvatarButton imageUrl={avatarUrl} altText={avatarAlt} />
     </div>
     
-    {#if isDropdownOpen}
+    {#if $authStore.isInitialized && isDropdownOpen}
       <div class="dropdown-menu">
-        {#if isAuthenticated}
+        {#if $authStore.isAuthenticated}
           <div class="dropdown-header">
-            <strong>{nickname}</strong>
+            <strong>{$authStore.nickname}</strong>
           </div>
           <button class="dropdown-item" on:click={handleLogoutClick}>
             Logout

@@ -1,34 +1,20 @@
 <script lang="ts">
+  import type { DisplayMessage } from '$lib/types';
   import ChatMessage from './ChatMessage.svelte';
+  import QuestionChatMessage from './QuestionChatMessage.svelte';
   import ChatInput from './ChatInput.svelte';
-  import { afterUpdate } from 'svelte';
+  import { afterUpdate, createEventDispatcher } from 'svelte';
+  import { authStore } from '$lib/services/authService';
+  import { get } from 'svelte/store';
   
-  export let messages: Array<{
-    username: string;
-    avatarSrc: string;
-    message: string;
-    isCurrentUser: boolean;
-  }> = [
-    {
-      username: "JACOB",
-      avatarSrc: "https://placehold.co/88x88",
-      message: "salut mon caillou",
-      isCurrentUser: true
-    },
-    {
-      username: "JOJO",
-      avatarSrc: "https://placehold.co/88x88",
-      message: "pk je suis sur les images??",
-      isCurrentUser: false
-    }
-  ];
+  export let messages: DisplayMessage[] = [];
+  export let isInteractionAllowed: boolean = false;
   
-  export let currentUsername: string = "";
-  
+  const dispatch = createEventDispatcher();
+
   let inputMessage: string = "";
   let messagesContainer: HTMLElement;
   let shouldAutoScroll = true;
-  let currentUserAvatar: string = "/images/cop.png";
   
   function scrollToBottom() {
     if (shouldAutoScroll && messagesContainer) {
@@ -53,36 +39,77 @@
   }
   
   function handleSubmit() {
-    if (inputMessage.trim()) {
-      shouldAutoScroll = true;
-      
-      messages = [
-        ...messages,
-        {
-          username: currentUsername || "YOU",
-          avatarSrc: currentUserAvatar,
-          message: inputMessage,
-          isCurrentUser: true
-        }
-      ];
-      
-      inputMessage = "";
+    const trimmedMessage = inputMessage.trim();
+    if (!trimmedMessage) {
+      return;
     }
+
+    shouldAutoScroll = true;
+
+    if (trimmedMessage.startsWith('/question ')) {
+      const questionText = trimmedMessage.substring('/question '.length).trim();
+      if (questionText) {
+        dispatch('submitQuestion', { question: questionText });
+      } else {
+        dispatch('submitChatMessage', { text: "Error: /question command cannot be empty."});
+      }
+    } else {
+      dispatch('submitChatMessage', { text: trimmedMessage });
+    }
+    
+    inputMessage = "";
+  }
+
+  function handleQuestionAnswered(event: CustomEvent<{ questionId: string; answer: boolean }>) {
+    dispatch('submitAnswer', {
+      questionId: event.detail.questionId,
+      answer: event.detail.answer
+    });
+  }
+
+  function handleRequestGuessEvent(event: CustomEvent<{ questionId: string }>) {
+    dispatch('submitGuessRequest', { questionId: event.detail.questionId });
+  }
+
+  function handlePassTurnEvent(event: CustomEvent<{ questionId: string }>) {
+    dispatch('submitPassTurn', { questionId: event.detail.questionId });
   }
 </script>
 
 <div class="game-chat-window">
-  <div class="messages-container" 
-       bind:this={messagesContainer} 
+  <div class="messages-container"
+       bind:this={messagesContainer}
        on:scroll={handleScroll}>
-    {#each messages as msg, i}
+    {#each messages as msg (msg.id)}
       <div class="message-wrapper">
-        <ChatMessage
-          avatarSrc={msg.avatarSrc}
-          username={msg.username}
-          message={msg.message}
-          isCurrentUser={msg.isCurrentUser}
-        />
+        {#if msg.type === 'event' && msg.eventClass === 'question' && msg.questionDetails}
+          {@const currentUserDetails = get(authStore)}
+          {@const qd = msg.questionDetails}
+          <QuestionChatMessage
+            timestamp={msg.timestamp}
+            avatarSrc={msg.avatarSrc || "https://placehold.co/88x88"}
+            username={msg.username || "System"}
+            questionText={qd.originalQuestionText || msg.text}
+            questionId={qd.questionId}
+            isCurrentUser={currentUserDetails.id?.toString() === qd.askingPlayerId}
+            isTargetUser={currentUserDetails.id?.toString() === qd.targetPlayerId && !qd.isAnswered}
+            isAnswered={qd.isAnswered}
+            on:answer={handleQuestionAnswered}
+            on:requestGuess={handleRequestGuessEvent}
+            on:passTurn={handlePassTurnEvent}
+          />
+        {:else if msg.type === 'chat'}
+          <ChatMessage
+            avatarSrc={msg.avatarSrc}
+            username={msg.username}
+            message={msg.text}
+            isCurrentUser={msg.isCurrentUser}
+          />
+        {:else if msg.type === 'event'}
+          <div class="event-message {msg.eventClass || 'system'}">
+            <span class="timestamp">[{new Date(msg.timestamp).toLocaleTimeString()}]</span> {msg.text}
+          </div>
+        {/if}
       </div>
     {/each}
   </div>
@@ -92,6 +119,7 @@
       bind:value={inputMessage}
       onInput={handleInput}
       onSubmit={handleSubmit}
+      disabled={!isInteractionAllowed}
     />
   </div>
 </div>
@@ -151,5 +179,48 @@
     left: 21px;
     width: calc(100% - 42px);
     box-sizing: border-box;
+  }
+
+  .event-message {
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .event-message .timestamp {
+    color: #777;
+    margin-right: 5px;
+    font-size: 0.9em;
+  }
+
+  .event-message.system {
+    background-color: #e9ecef;
+    color: #495057;
+    font-style: italic;
+  }
+
+  .event-message.question {
+    background-color: #e7f3fe;
+    color: #0c5460;
+  }
+
+  .event-message.answer {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .event-message.guess {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .event-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: bold;
   }
 </style>

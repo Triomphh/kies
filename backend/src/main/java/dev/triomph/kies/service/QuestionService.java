@@ -9,6 +9,7 @@ import dev.triomph.kies.DAO.QuestionDAO;
 import dev.triomph.kies.pojo.Player;
 import dev.triomph.kies.pojo.Question;
 import dev.triomph.kies.pojo.Round;
+import dev.triomph.kies.pojo.Game;
 
 
 @Service
@@ -28,10 +29,15 @@ public class QuestionService {
         return questionDAO.findById(id);
     }
 
-    public Question createQuestion(String text, Integer turnNumber, Round round, Player asker) {
-        Question question = new Question(text, turnNumber, round, asker);
+    public Question createQuestion(Game game, Player askingPlayer, Player targetPlayer, String questionText, Integer gameRoundNumber) {
+        Question question = new Question(game, askingPlayer, targetPlayer, questionText, gameRoundNumber);
         return questionDAO.save(question);
     }
+    
+    public List<Question> getQuestionsByGame(Game game) {
+        return questionDAO.findByGame(game);
+    }
+
 
     public Question updateQuestion(Question question) {
         return questionDAO.save(question);

@@ -33,8 +33,8 @@ public class AuthController {
 
     @PostMapping("/temp-player")
     public ResponseEntity<?> createTemporaryPlayer(@RequestBody PlayerRequest playerRequest) {
-        Player player = authService.createTemporaryPlayer(playerRequest.getNickname());
-        AuthResponse response = authService.authenticateTemporaryPlayer(player.getNickname());
+        Player newlyCreatedPlayer = authService.createTemporaryPlayer(playerRequest.getNickname());
+        AuthResponse response = authService.authenticateTemporaryPlayer(newlyCreatedPlayer);
         return ResponseEntity.ok(response);
     }
 } 

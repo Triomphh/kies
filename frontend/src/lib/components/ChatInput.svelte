@@ -3,6 +3,7 @@
   export let value: string = "";
   export let onInput: (event: Event) => void = () => {};
   export let onSubmit: () => void = () => {};
+  export let disabled: boolean = false;
 
   function handleKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -19,6 +20,7 @@
   bind:value={value}
   on:input={onInput}
   on:keydown={handleKeydown}
+  {disabled}
 />
 
 <style>
@@ -41,6 +43,16 @@
     font-family: 'Comic Neue', cursive;
     font-weight: 700;
     cursor: text;
+  }
+
+  .chat-input:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    color: #757575;
+  }
+
+  .chat-input:disabled::placeholder {
+    color: rgba(0, 0, 0, 0.15);
   }
 
   .chat-input::placeholder {

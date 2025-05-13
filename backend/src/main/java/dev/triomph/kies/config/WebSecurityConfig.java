@@ -80,6 +80,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .requestMatchers("/favicon.ico").permitAll()
+                    .requestMatchers("/ws/**").permitAll()
                     .anyRequest().authenticated()
             );
         

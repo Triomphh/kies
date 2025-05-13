@@ -41,10 +41,7 @@ public class AuthService {
         return playerRepository.save(player);
     }
 
-    public AuthResponse authenticateTemporaryPlayer(String nickname) {
-        Player player = playerRepository.findFirstByNickname(nickname)
-                .orElseThrow(() -> new UsernameNotFoundException("Player not found with nickname: " + nickname));
-        
+    public AuthResponse authenticateTemporaryPlayer(Player player) {
         String jwt = jwtUtils.generateJwtToken(player.getPlayerId(), player.getNickname(), false, "ROLE_PLAYER");
 
         return new AuthResponse(

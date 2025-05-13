@@ -7,6 +7,7 @@ public class PlayerDTO {
     private String nickname;
     private int gamesPlayed;
     private int victories;
+    private String profileImageUrl;
     
     public PlayerDTO() {
     }
@@ -16,6 +17,20 @@ public class PlayerDTO {
         this.nickname = nickname;
         this.gamesPlayed = gamesPlayed;
         this.victories = victories;
+    }
+    
+    public PlayerDTO(Player player) {
+        this.playerId = player.getPlayerId();
+        this.nickname = player.getNickname();
+        this.gamesPlayed = player.getGamesPlayed();
+        this.victories = player.getVictories();
+        
+        this.profileImageUrl = player.getProfileImageUrl();
+        if (this.profileImageUrl == null || this.profileImageUrl.isEmpty()) {
+            this.profileImageUrl = "https://api.dicebear.com/6.x/personas/png?seed=" + 
+                    player.getNickname().toLowerCase().replaceAll("[^a-z0-9]", "") + 
+                    "&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf&size=128";
+        }
     }
     
     public static PlayerDTO fromEntity(Player player) {
@@ -57,5 +72,13 @@ public class PlayerDTO {
     
     public void setVictories(int victories) {
         this.victories = victories;
+    }
+    
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+    
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 } 

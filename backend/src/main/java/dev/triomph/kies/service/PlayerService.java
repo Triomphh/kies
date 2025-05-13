@@ -31,6 +31,7 @@ public class PlayerService {
      * Obtient le premier joueur avec le pseudo donné
      * @deprecated Attention en utilisant la méthode...
      */
+    @Deprecated
     public Optional<Player> getPlayerByNickname(String nickname) {
         return playerDAO.findByNickname(nickname);
     }

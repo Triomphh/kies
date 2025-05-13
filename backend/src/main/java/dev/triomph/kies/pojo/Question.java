@@ -14,47 +14,53 @@ public class Question {
     @Column(name = "question_id")
     private Long questionId;
 
-    @Column(name = "turn_number")
-    private Integer turnNumber;
+    @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
+    private String questionText;
 
-    @Column(name = "text")
-    private String text;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "game_id", referencedColumnName = "game_id", nullable = false)
+    private Game game;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "asking_player_id", referencedColumnName = "player_id", nullable = false)
+    private Player askingPlayer;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "target_player_id", referencedColumnName = "player_id", nullable = false)
+    private Player targetPlayer;
+    
+    @Column(name = "game_round_number")
+    private Integer gameRoundNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "answer")
     private Answer answer;
 
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "round", referencedColumnName = "round_id")
-    private Round round;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asker", referencedColumnName = "player_id")
-    private Player asker;
     
     // Constructeur par défaut
     public Question() {
         this.timestamp = LocalDateTime.now();
-        this.answer = Answer.PENDING; // Par défaut, la réponse est en attente
+        this.answer = Answer.PENDING;
     }
     
     /**
-     * Crée une nouvelle question dans un round.
+     * Crée une nouvelle question.
      *
-     * @param text         Le texte de la question
-     * @param turnNumber   Le numéro du tour
-     * @param round        Le round associé
-     * @param asker        Le joueur qui pose la question
+     * @param game             Le jeu associé
+     * @param askingPlayer     Le joueur qui pose la question
+     * @param targetPlayer     Le joueur à qui la question est posée
+     * @param questionText     Le texte de la question
+     * @param gameRoundNumber  Le numéro du round dans la partie
      */
-    public Question(String text, Integer turnNumber, Round round, Player asker) {
-        this(); // Appel au constructeur par défaut pour initialiser le timestamp et la réponse
-        this.text = text;
-        this.turnNumber = turnNumber;
-        this.round = round;
-        this.asker = asker;
+    public Question(Game game, Player askingPlayer, Player targetPlayer, String questionText, Integer gameRoundNumber) {
+        this();
+        this.game = game;
+        this.askingPlayer = askingPlayer;
+        this.targetPlayer = targetPlayer;
+        this.questionText = questionText;
+        this.gameRoundNumber = gameRoundNumber;
     }
     
 
@@ -67,20 +73,44 @@ public class Question {
         this.questionId = questionId;
     }
 
-    public Integer getTurnNumber() {
-        return turnNumber;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setTurnNumber(Integer turnNumber) {
-        this.turnNumber = turnNumber;
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
     }
 
-    public String getText() {
-        return text;
+    public Game getGame() {
+        return game;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Player getAskingPlayer() {
+        return askingPlayer;
+    }
+
+    public void setAskingPlayer(Player askingPlayer) {
+        this.askingPlayer = askingPlayer;
+    }
+
+    public Player getTargetPlayer() {
+        return targetPlayer;
+    }
+
+    public void setTargetPlayer(Player targetPlayer) {
+        this.targetPlayer = targetPlayer;
+    }
+
+    public Integer getGameRoundNumber() {
+        return gameRoundNumber;
+    }
+
+    public void setGameRoundNumber(Integer gameRoundNumber) {
+        this.gameRoundNumber = gameRoundNumber;
     }
 
     public Answer getAnswer() {
@@ -99,19 +129,11 @@ public class Question {
         this.timestamp = timestamp;
     }
 
-    public Round getRound() {
-        return round;
-    }
-
-    public void setRound(Round round) {
-        this.round = round;
-    }
-
-    public Player getAsker() {
-        return asker;
-    }
-
-    public void setAsker(Player asker) {
-        this.asker = asker;
+    @PrePersist
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
+        if (this.answer == null) {
+            this.answer = Answer.PENDING;
+        }
     }
 }

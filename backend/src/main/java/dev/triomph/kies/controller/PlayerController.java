@@ -44,6 +44,7 @@ public class PlayerController {
      * Trouve un joueur par son pseudo. Renvoie le premier joueur trouvé avec ce pseudo.
      * @deprecated Attention en utilisant ce endpoint...
      */
+    @Deprecated
     @GetMapping("/nickname/{nickname}")
     public ResponseEntity<PlayerDTO> getPlayerByNickname(@PathVariable String nickname) {
         return playerService.getPlayerByNickname(nickname)

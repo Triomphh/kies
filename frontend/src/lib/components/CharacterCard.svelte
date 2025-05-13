@@ -1,32 +1,45 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
   export let characterName: string;
   export let imageUrl: string = "https://placehold.co/121x166";
-  export let hovered: boolean = false;
-  export let clicked: boolean = false;
+  export let isHovered: boolean = false;
+  export let isFlipped: boolean = false;
+  export let selectable: boolean = false;
+  export let secret: boolean = false;
+  export let guessingActive: boolean = false;
+
+  const dispatch = createEventDispatcher();
+
+  function handleClick() {
+    dispatch('click');
+  }
 
   function handleKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' || event.key === ' ') {
-      clicked = !clicked;
+      handleClick();
     }
   }
 </script>
 
-<div 
-  class="card" 
-  class:hovered={hovered && !clicked}
-  class:clicked={clicked}
-  class:clicked-hovered={clicked && hovered}
+<div
+  class="card"
+  class:hovered={isHovered && !isFlipped}
+  class:flipped={isFlipped}
+  class:flipped-hovered={isFlipped && isHovered}
+  class:selectable={selectable && !isFlipped}
+  class:secret={secret && !isFlipped}
+  class:guessing-active={guessingActive && !isFlipped}
   style="background-image: url({imageUrl});"
-  on:mouseenter={() => hovered = true}
-  on:mouseleave={() => hovered = false}
-  on:click={() => clicked = !clicked}
+  on:mouseenter={() => isHovered = true}
+  on:mouseleave={() => isHovered = false}
+  on:click={handleClick}
   on:keydown={handleKeyPress}
   role="button"
   tabindex="0"
-  aria-pressed={clicked}
+  aria-pressed={isFlipped}
   aria-label="Character card for {characterName}"
 >
-  {#if clicked && hovered}
+  {#if isFlipped && isHovered}
     <div data-svg-wrapper>
       <svg width="35" height="32" viewBox="0 0 35 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M10.8333 1.66669L2.5 10L10.8333 18.3334M17.5 30H22.5C23.8132 30 25.1136 29.7414 26.3268 29.2388C27.5401 28.7363 28.6425 27.9997 29.5711 27.0711C30.4997 26.1425 31.2362 25.0401 31.7388 23.8269C32.2413 22.6136 32.5 21.3132 32.5 20C32.5 18.6868 32.2413 17.3864 31.7388 16.1732C31.2362 14.9599 30.4997 13.8575 29.5711 12.929C28.6425 12.0004 27.5401 11.2638 26.3268 10.7612C25.1136 10.2587 23.8132 10 22.5 10H4.16667" stroke="white" stroke-width="3.33333"/>
@@ -107,20 +120,20 @@
     outline-color: #DD3033;
   }
 
-  .card.hovered .andr_span {
+  .card.hovered:not(.flipped) .andr_span {
     color: white;
   }
 
-  .card.hovered .frame-5 {
+  .card.hovered:not(.flipped):not(.guessing-active) .frame-5 {
     background: #DD3033;
   }
 
-  .card.clicked {
+  .card.flipped {
     box-shadow: none;
     opacity: 0.15;
   }
 
-  .card.clicked::before {
+  .card.flipped::before {
     content: "";
     position: absolute;
     top: 0;
@@ -131,19 +144,35 @@
     border-radius: 8px;
   }
 
-  .card.clicked .andr_span {
+  .card.flipped .andr_span {
     color: black;
     position: relative;
     z-index: 2;
   }
 
-  .card.clicked .frame-5 {
+  .card.flipped .frame-5 {
+    background: white;
     position: relative;
     z-index: 2;
   }
 
-  .card.clicked-hovered {
+  .card.flipped-hovered {
     gap: 37px;
+  }
+
+
+  .card.secret:not(.flipped) {
+    border: 4px solid #FFD700;
+    padding: 1px;
+    box-shadow: 0px 0px 10px 3px #FFD700;
+  }
+
+  .card.guessing-active:hover:not(.flipped) {
+    outline-color: green;
+  }
+
+  .card.guessing-active:hover:not(.flipped) .frame-5 {
+    background-color: green;
   }
 
   [data-svg-wrapper] {

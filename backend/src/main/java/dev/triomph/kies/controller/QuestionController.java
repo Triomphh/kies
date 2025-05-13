@@ -42,33 +42,6 @@ public class QuestionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Question> createQuestion(@RequestBody Map<String, Object> payload) {
-        try {
-            String text = (String) payload.get("text");
-            Integer turnNumber = (Integer) payload.get("turnNumber");
-            Long roundId = Long.parseLong(payload.get("roundId").toString());
-            Long askerId = Long.parseLong(payload.get("askerId").toString());
-
-            Optional<Round> roundOpt = roundService.getRoundById(roundId);
-            Optional<Player> askerOpt = playerService.getPlayerById(askerId);
-
-            if (roundOpt.isPresent() && askerOpt.isPresent()) {
-                Question question = questionService.createQuestion(
-                    text,
-                    turnNumber,
-                    roundOpt.get(),
-                    askerOpt.get()
-                );
-                return ResponseEntity.status(HttpStatus.CREATED).body(question);
-            } else {
-                return ResponseEntity.badRequest().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
         if (!questionService.getQuestionById(id).isPresent()) {
@@ -88,8 +61,4 @@ public class QuestionController {
         questionService.deleteQuestion(id);
         return ResponseEntity.noContent().build();
     }
-
-
-    // @PutMapping("/{id}/answer")
-    // answerQuestion()               ...à implémenter
 }

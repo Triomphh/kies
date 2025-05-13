@@ -1,5 +1,26 @@
 import { API_BASE_URL } from '$lib/config';
 import { browser } from '$app/environment';
+import { writable, get } from 'svelte/store';
+
+export interface AuthStoreState {
+  isAuthenticated: boolean;
+  isTemporaryPlayer: boolean;
+  id: number | null;
+  nickname: string;
+  role: string;
+  isInitialized: boolean;
+}
+
+const initialAuthState: AuthStoreState = {
+  isAuthenticated: false,
+  isTemporaryPlayer: false,
+  id: null,
+  nickname: '',
+  role: '',
+  isInitialized: false,
+};
+
+export const authStore = writable<AuthStoreState>(initialAuthState);
 
 export interface LoginRequest {
   email: string;
@@ -34,34 +55,77 @@ export interface TempPlayerResponse {
 }
 
 class AuthService {
+  private generateAnonymousNickname(): string {
+    const randomId = Math.floor(Math.random() * 90000) + 10000;
+    return `Anon${randomId}`;
+  }
+
+  public async initialize(): Promise<void> {
+    if (!browser) {
+      authStore.set({ ...initialAuthState, isInitialized: true });
+      return;
+    }
+
+    const token = localStorage.getItem('authToken');
+    const userIdString = localStorage.getItem('userId');
+    const username = localStorage.getItem('username') || '';
+    const role = localStorage.getItem('role') || '';
+    const hasAccountString = localStorage.getItem('hasAccount');
+
+    if (token && userIdString) {
+      const userId = parseInt(userIdString, 10);
+      const hasAccount = hasAccountString === 'true';
+
+      authStore.set({
+        isAuthenticated: hasAccount,
+        isTemporaryPlayer: !hasAccount,
+        id: userId,
+        nickname: username,
+        role: role,
+        isInitialized: true,
+      });
+    } else {
+      try {
+        const tempNickname = this.generateAnonymousNickname();
+        const tempPlayerRequest: TempPlayerRequest = { nickname: tempNickname };
+        await this.createTempPlayer(tempPlayerRequest);
+      } catch (error) {
+        console.error('Failed to create temporary player during initialization:', error);
+        authStore.set({
+          ...initialAuthState,
+          isInitialized: true,
+        });
+      }
+    }
+  }
+
   private storeToken(response: AuthResponse): void {
     if (!browser) return;
-    
+
     localStorage.setItem('authToken', response.token);
     localStorage.setItem('userId', response.id.toString());
     localStorage.setItem('username', response.nickname);
     localStorage.setItem('role', response.role);
     localStorage.setItem('hasAccount', response.hasAccount.toString());
+
+    authStore.set({
+      isAuthenticated: response.hasAccount,
+      isTemporaryPlayer: !response.hasAccount,
+      id: response.id,
+      nickname: response.nickname,
+      role: response.role,
+      isInitialized: true,
+    });
   }
 
   isAuthenticated(): boolean {
     if (!browser) return false;
-    
-    const token = localStorage.getItem('authToken');
-    if (!token) return false;
-    
-    const hasAccount = localStorage.getItem('hasAccount') === 'true';
-    
-    return hasAccount;
+    return get(authStore).isAuthenticated;
   }
 
   isTemporaryPlayer(): boolean {
     if (!browser) return false;
-    
-    const token = localStorage.getItem('authToken');
-    const hasAccount = localStorage.getItem('hasAccount') === 'true';
-    
-    return token !== null && !hasAccount;
+    return get(authStore).isTemporaryPlayer;
   }
 
   async login(loginRequest: LoginRequest): Promise<AuthResponse> {
@@ -138,30 +202,30 @@ class AuthService {
 
   logout(): void {
     if (!browser) return;
-    
+
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
     localStorage.removeItem('role');
     localStorage.removeItem('hasAccount');
-    
     localStorage.removeItem('tempPlayerId');
     localStorage.removeItem('playerNickname');
+
+    authStore.set({
+      ...initialAuthState,
+      isInitialized: true,
+    });
   }
 
   getUserInfo() {
     if (!browser) {
-      return {
-        id: null,
-        username: '',
-        role: ''
-      };
+      return { id: null, username: '', role: '' };
     }
-    
+    const storeState = get(authStore);
     return {
-      id: localStorage.getItem('userId'),
-      username: localStorage.getItem('username'),
-      role: localStorage.getItem('role')
+      id: storeState.id,
+      username: storeState.nickname,
+      role: storeState.role,
     };
   }
 
@@ -171,6 +235,12 @@ class AuthService {
     const token = localStorage.getItem('authToken');
     return token ? { 'Authorization': `Bearer ${token}` } : {};
   }
+
+  getRawJwtToken(): string | null {
+    if (!browser) return null;
+    return localStorage.getItem('authToken');
+  }
 }
 
-export const authService = new AuthService(); 
+export const authService = new AuthService();
+export const authInitializedPromise = authService.initialize();
