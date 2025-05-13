@@ -1,6 +1,8 @@
 <script>
+  import Fireworks from './Fireworks.svelte';
   export let showClouds = true;
   export let showGrass = true;
+  export let showFireworks = false; // Default to false
 </script>
 
 <div class="background-container">
@@ -11,6 +13,10 @@
   {#if showClouds}
     <div class="cloud1"></div>
     <div class="cloud2"></div>
+  {/if}
+
+  {#if showFireworks}
+    <Fireworks />
   {/if}
   
   <div class="content">
@@ -31,7 +37,8 @@
     height: 100%;
     min-height: 100vh;
     position: relative;
-    background: #BDDFFF;
+    /* background: #BDDFFF; */
+    background: linear-gradient(to bottom, #87CEEB, #1E90FF);
     overflow: hidden;
   }
 
@@ -44,7 +51,7 @@
     background: #56BF72;
     box-shadow: 242.39999389648438px 242.39999389648438px 242.39999389648438px;
     filter: blur(121.20px);
-    z-index: 0;
+    z-index: 1;
     transform: translateY(50%);
   }
 
@@ -58,7 +65,7 @@
     background: rgba(255, 255, 255, 0.60);
     border-radius: 352px;
     filter: blur(25.600000381469727px);
-    z-index: 1;
+    z-index: 2;
   }
 
   .cloud2 {
@@ -71,12 +78,12 @@
     background: rgba(255, 255, 255, 0.60);
     border-radius: 352px;
     filter: blur(27.899999618530273px);
-    z-index: 1;
+    z-index: 2;
   }
 
   .content {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     height: 100%;
     width: 100%;
   }

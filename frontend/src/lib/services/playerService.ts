@@ -85,6 +85,28 @@ class PlayerService {
       throw error;
     }
   }
+
+  async getLeaderboard(): Promise<Player[]> {
+    try {
+      const authHeaders = authService.getAuthHeader();
+      const response = await fetch(`${API_BASE_URL}/players/leaderboard`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authHeaders
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch leaderboard');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      throw error;
+    }
+  }
 }
 
 export const playerService = new PlayerService(); 

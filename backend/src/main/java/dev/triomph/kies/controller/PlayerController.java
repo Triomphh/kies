@@ -1,5 +1,6 @@
 package dev.triomph.kies.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -135,5 +136,19 @@ public class PlayerController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    
+    /**
+     * Get players sorted by their number of victories in descending order.
+     * This endpoint is used for the leaderboard page.
+     */
+    @GetMapping("/leaderboard")
+    public ResponseEntity<List<PlayerDTO>> getLeaderboard() {
+        List<PlayerDTO> players = playerService.getAllPlayers()
+                .stream()
+                .sorted(Comparator.comparing(Player::getVictories).reversed())
+                .map(player -> new PlayerDTO(player))  // Use constructor instead of fromEntity to ensure profile images are included
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(players);
     }
 }
