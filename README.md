@@ -5,6 +5,17 @@
 Ce document présente le développement de l'application "Kies" qui vise à reproduire le jeu de société "Qui est-ce ?" en ligne. Il couvre normalement l'ensemble des fonctionnalités implémentées, les technologies utilisées et pourquoi, ainsi que les mesures prises pour garantir la qualité et la maintenabilité du code.
 La plupart des features ont pu être implémentées, mais certaines restent manquantes. Une liste des fonctionnalités est présente plus loin dans le rapport.
 
+## Démo
+
+![Design Figma](Documents/Images/figma.png)
+![Gameplay](Documents/Images/gameplay.png)
+![Leaderboard](Documents/Images/leaderboard.png)
+![Page des grilles](Documents/Images/grid_page.png)
+![Prévisualisation d'une grille](Documents/Images/grid_preview.png)
+![Page de connexion](Documents/Images/login.png)
+![Page d'inscription](Documents/Images/register.png)
+
+
 ## Architecture Générale
 
 L'application a été conçue suivant une architecture client-serveur découplée :
